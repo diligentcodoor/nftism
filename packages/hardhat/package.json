@@ -24,6 +24,7 @@
     "ethereum-waffle": "^3.0.0",
     "ethers": "^5.0.0",
     "hardhat": "^2.8.0",
+    "hardhat-deploy": "^0.9.14",
     "hardhat-gas-reporter": "^1.0.4",
     "keccak256": "^1.0.6",
     "merkletreejs": "^0.2.27",

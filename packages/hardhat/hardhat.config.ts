@@ -5,6 +5,7 @@ import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
+import "hardhat-deploy";
 import "solidity-coverage";
 
 dotenv.config();
@@ -24,6 +25,11 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 const config: HardhatUserConfig = {
   solidity: "0.8.11",
+  namedAccounts: {
+    deployer: {
+      default: 0,
+    },
+  },
   networks: {
     hardhat: {
       forking: {
