@@ -9,26 +9,15 @@ const Header: React.FC = () => {
       as="nav"
       align="center"
       justify="space-between"
-      wrap="wrap"
+      wrap="nowrap"
       w="100%"
       mb={8}
       p={8}
       color={["white"]}
     >
-      <Flex align="center">
-        <Logo w="65px" color={["white"]} />
-      </Flex>
+      <Logo w="65px" color={["white"]} />
 
-      <Box display="block" flexBasis={{ base: "100%", md: "auto" }}>
-        <Flex
-          align="center"
-          justify={["center", "space-between", "flex-end", "flex-end"]}
-          direction={["column", "row", "row", "row"]}
-          pt={[4, 4, 0, 0]}
-        >
-          <ConnectButton />
-        </Flex>
-      </Box>
+      <ConnectButton />
     </Flex>
   );
 };

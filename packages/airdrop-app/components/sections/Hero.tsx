@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import ConnectButton from "../ui/ConnectButton";
 
 interface HeroProps {
   title: string;
@@ -28,14 +29,15 @@ const Hero: React.FC<HeroProps> = ({
     <Flex
       align="center"
       justify={{ base: "center", md: "space-around", xl: "space-between" }}
-      direction={{ base: "column", md: "row" }}
+      direction={{ base: "column", md: "column" }}
       wrap="nowrap"
       px={8}
       mb={16}
     >
-      <Box w={{ base: "80%", sm: "60%", md: "50%" }} mb={{ base: 12, md: 0 }}>
-        <Image src={image} alt="CryptoMutts" size="100%" rounded="1rem" />
+      <Box w={{ base: "80%", sm: "60%", md: "30%" }} mb={{ base: 12, md: 0 }}>
+        <Image src={image} alt="CryptoMutts" size="100%" />
       </Box>
+      <ConnectButton />
       <Stack spacing={4} w={{ base: "80%", md: "40%" }} align={["center"]}>
         <Heading
           as="h1"

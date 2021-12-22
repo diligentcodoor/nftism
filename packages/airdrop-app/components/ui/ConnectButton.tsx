@@ -16,7 +16,7 @@ function ConnectButton() {
 
   let pendingTransactions: any[] = [];
 
-  let buttonText = "Connect Wallet";
+  let buttonText = "Connect";
   let clickFunc: any = connect;
   let buttonStyle = {};
 

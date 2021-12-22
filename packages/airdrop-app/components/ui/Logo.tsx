@@ -5,9 +5,9 @@ import Link from "next/link";
 
 export default function Logo(props: any) {
   return (
-    <Box {...props} cursor="pointer" overflow="hidden">
+    <Box {...props} rounded="full" cursor="pointer" overflow="hidden">
       <Link href="/" passHref>
-        <Image src="/logo.png" height="100%" width="100%" alt="logo" />
+        <Image src="/logo.jpg" height="100%" width="100%" alt="logo" />
       </Link>
     </Box>
   );
