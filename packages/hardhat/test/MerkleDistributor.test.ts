@@ -85,7 +85,9 @@ describe("MerkleDistributor", function () {
 
       expect(await nftism.balanceOf(users[0].address)).to.eq(0);
       await distributor.claim(users[0].address, 100, proof);
-      expect(await nftism.balanceOf(users[0].address)).to.eq(100);
+      expect(await nftism.balanceOf(users[0].address)).to.eq(
+        ethers.utils.parseEther("100")
+      );
     });
 
     it("must have enough to transfer", async () => {

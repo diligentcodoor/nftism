@@ -26,7 +26,6 @@ contract MerkleDistributor {
       bytes32[] calldata merkleProof
     ) public {
       require(!isClaimed(account), "MerkleDistributor: Drop already claimed.");
-      // Verify the merkle proof.
       bytes32 node = keccak256(abi.encodePacked(account, amount));
 
       require(
@@ -34,9 +33,8 @@ contract MerkleDistributor {
           "MerkleDistributor: Invalid proof."
       );
 
-      // do your logic accordingly here
       claimed[account] = true;
-      require(IERC20(token).transfer(account, amount), "MerkleDistributor: Transfer failed.");
+      require(IERC20(token).transfer(account, amount * 10**18), "MerkleDistributor: Transfer failed.");
 
       emit Claimed(account, amount);
     }
