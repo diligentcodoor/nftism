@@ -64,12 +64,7 @@ const ClaimButton: React.FC<Props> = () => {
     </Alert>
   ) : (
     <Flex direction="column" align="center">
-      <HeaderButton
-        isLoading={loading}
-        loadingText="Pending"
-        isDisabled={claimed}
-        onClick={claim}
-      >
+      <HeaderButton isLoading={loading} loadingText="Pending" isDisabled={true}>
         {claimed ? "Claimed" : "Claim"}
       </HeaderButton>
       {txnLink && (
