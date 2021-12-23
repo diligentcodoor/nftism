@@ -32,7 +32,7 @@ async function main() {
     balancesArray.push({ address, amount: balance * 100 });
   }
 
-  const file = writeFileSync("./snapshot.json", JSON.stringify(balancesArray));
+  const file = writeFileSync("../snapshot.json", JSON.stringify(balancesArray));
 }
 
 main().catch((error) => {

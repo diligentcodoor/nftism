@@ -2,7 +2,7 @@ import { MerkleTree } from "merkletreejs";
 import keccak256 from "keccak256";
 import { utils } from "ethers";
 
-import users from "../snapshot.json";
+import users from "../../snapshot.json";
 
 export const generateMerkleTree = (): MerkleTree => {
   const elements = users.map((user) =>
