@@ -38,6 +38,13 @@ const config: HardhatUserConfig = {
         blockNumber: 13856344,
       },
     },
+    localhost: {
+      forking: {
+        enabled: true,
+        url: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        blockNumber: 13856344,
+      },
+    },
     ropsten: {
       url: process.env.ROPSTEN_URL || "",
       accounts:

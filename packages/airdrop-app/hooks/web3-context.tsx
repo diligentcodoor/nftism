@@ -12,7 +12,7 @@ import {
   Web3Provider,
 } from "@ethersproject/providers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { getMainnetURI } from "../utils/blockchain";
+import { DEFAULT_URI, getLocalURI, getMainnetURI } from "../utils/blockchain";
 import { DEFAULT_NETWORK } from "../utils/blockchain";
 import { Networks } from "../utils/blockchain";
 import { messages } from "../utils/shared";
@@ -67,7 +67,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
   const [providerChainID, setProviderChainID] = useState(DEFAULT_NETWORK);
   const [address, setAddress] = useState("");
 
-  const [uri, setUri] = useState(getMainnetURI());
+  const [uri, setUri] = useState(DEFAULT_URI);
   const [provider, setProvider] = useState<JsonRpcProvider>(
     new StaticJsonRpcProvider(uri)
   );
@@ -84,6 +84,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
             package: WalletConnectProvider,
             options: {
               rpc: {
+                [Networks.LOCAL]: getLocalURI(),
                 [Networks.MAINNET]: getMainnetURI(),
               },
             },
