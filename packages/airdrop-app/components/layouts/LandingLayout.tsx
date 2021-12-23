@@ -12,6 +12,7 @@ interface Props {
 const LandingLayout: React.FC<Props> = ({ children }) => (
   <Flex
     bg="#12434d"
+    color="white"
     direction="column"
     align="center"
     m="0 auto"
@@ -20,7 +21,7 @@ const LandingLayout: React.FC<Props> = ({ children }) => (
     className={styles.animate}
   >
     <HeadSection />
-    <Header />
+    {/* <Header /> */}
     {children}
     <Footer />
   </Flex>
