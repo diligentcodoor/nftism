@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import { FaTelegram, FaTwitter } from "react-icons/fa";
-import { TELEGRAM_LINK, TWITTER_LINK } from "../../utils/constants";
+import { FaDiscord, FaTwitter } from "react-icons/fa";
+import { DISCORD_LINK, TWITTER_LINK } from "../../utils/constants";
 import SocialLink from "../ui/SocialLink";
 
 const Footer: React.FC = () => {
@@ -17,7 +17,11 @@ const Footer: React.FC = () => {
       opacity={1}
     >
       <SocialLink href={TWITTER_LINK} icon={FaTwitter} hoverColor="blue.500" />
-      <SocialLink href={TELEGRAM_LINK} icon={FaTelegram} hoverColor="white" />
+      <SocialLink
+        href={DISCORD_LINK}
+        icon={FaDiscord}
+        hoverColor="purple.500"
+      />
     </Flex>
   );
 };

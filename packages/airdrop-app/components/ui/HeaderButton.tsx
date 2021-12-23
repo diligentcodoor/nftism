@@ -19,11 +19,11 @@ const HeaderButton: React.FC<Props> = React.forwardRef(function HeaderButton(
       size="md"
       rounded="md"
       variant="outline"
-      colorScheme="red"
+      colorScheme="teal"
       color="white"
       _hover={{
         bg: "white",
-        color: "red.900",
+        color: "teal.500",
       }}
       onClick={onClick}
       {...props}

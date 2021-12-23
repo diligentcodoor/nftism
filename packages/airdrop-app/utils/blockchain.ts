@@ -8,8 +8,8 @@ export enum Networks {
 }
 
 // export const DEFAULT_NETWORK = Networks.MAINNET;
-export const DEFAULT_NETWORK = Networks.LOCAL;
-// export const DEFAULT_NETWORK = Networks.RINKEBY;
+// export const DEFAULT_NETWORK = Networks.LOCAL;
+export const DEFAULT_NETWORK = Networks.RINKEBY;
 
 export const networkConfig = {
   [Networks.MAINNET]: {

@@ -23,7 +23,7 @@ const LandingLayout: React.FC<Props> = ({ children }) => (
     <HeadSection />
     {/* <Header /> */}
     {children}
-    <Footer />
+    {/* <Footer /> */}
   </Flex>
 );
 
