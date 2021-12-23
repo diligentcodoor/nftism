@@ -6,12 +6,7 @@ import users from "../../snapshot.json";
 
 export const generateMerkleTree = (): MerkleTree => {
   const elements = users.map((user) =>
-    keccak256(
-      utils.solidityKeccak256(
-        ["address", "uint256"],
-        [user.address, user.amount]
-      )
-    )
+    utils.solidityKeccak256(["address", "uint256"], [user.address, user.amount])
   );
   return new MerkleTree(elements, keccak256, { sort: true });
 };
