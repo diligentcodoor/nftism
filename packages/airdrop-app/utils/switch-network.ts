@@ -1,4 +1,4 @@
-import { getMainnetURI } from "./blockchain";
+import { networkConfig, Networks } from "./blockchain";
 
 const switchRequest = () => {
   return window.ethereum.request({
@@ -14,7 +14,7 @@ const addChainRequest = () => {
       {
         chainId: "0x1",
         chainName: "Ethereum Mainnet",
-        rpcUrls: [getMainnetURI()],
+        rpcUrls: [networkConfig[Networks.MAINNET].uri],
         blockExplorerUrls: ["https://etherscan.io/"],
         nativeCurrency: {
           name: "Ethereum",

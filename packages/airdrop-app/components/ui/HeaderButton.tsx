@@ -3,6 +3,9 @@ import { Button } from "@chakra-ui/react";
 
 interface Props {
   children: React.ReactNode;
+  isLoading?: boolean;
+  loadingText?: string;
+  isDisabled?: boolean;
   onClick?: any;
   props?: any;
 }
