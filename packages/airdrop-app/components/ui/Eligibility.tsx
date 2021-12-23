@@ -26,7 +26,7 @@ function Eligibility() {
   return claimed ? (
     <Text>{"You have already claimed your airdrop"}</Text>
   ) : (
-    <Text>You are eligibile to claim {getBalance(address)} NFTism</Text>
+    <Text>You are eligible to claim {getBalance(address)} NFTism</Text>
   );
 }
 
