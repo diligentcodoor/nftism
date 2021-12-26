@@ -7,7 +7,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useWeb3Context } from "../../hooks/web3-context";
 import {
   DEFAULT_NETWORK,
@@ -23,11 +23,20 @@ import { TransactionResponse } from "@ethersproject/providers";
 interface Props {}
 
 const ClaimButton: React.FC<Props> = () => {
-  const { address, provider } = useWeb3Context();
+  const { address, provider, providerChainID, checkWrongNetwork } =
+    useWeb3Context();
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [claimed, setClaimed] = useState<boolean>(false);
   const [txnLink, setTxnLink] = useState<string | null>();
+  const [buttonText, setButtonText] = useState<string>("Claim");
+
+  useEffect(() => {
+    if (providerChainID !== DEFAULT_NETWORK) {
+      setButtonText("Wrong Network");
+      checkWrongNetwork();
+    }
+  }, [providerChainID, checkWrongNetwork, setButtonText]);
 
   const claim = useCallback(async () => {
     const airdrop = new ethers.Contract(
@@ -49,6 +58,7 @@ const ClaimButton: React.FC<Props> = () => {
       await claimTx.wait();
       setLoading(false);
       setClaimed(true);
+      setButtonText("Claimed");
     } catch (e: any) {
       setError(true);
     }
@@ -65,7 +75,7 @@ const ClaimButton: React.FC<Props> = () => {
   ) : (
     <Flex direction="column" align="center">
       <HeaderButton isLoading={loading} loadingText="Pending" isDisabled={true}>
-        {claimed ? "Claimed" : "Claim"}
+        {buttonText}
       </HeaderButton>
       {txnLink && (
         <Link mt={5} href={txnLink}>

@@ -19,8 +19,10 @@ function Eligibility() {
         AIRDROP_ABI,
         provider
       );
-      const _claimed = await airdrop.isClaimed(address);
-      setClaimed(_claimed);
+      if (provider.network.chainId === networkConfig[DEFAULT_NETWORK].chainId) {
+        const _claimed = await airdrop.isClaimed(address);
+        setClaimed(_claimed);
+      }
     };
     fetchClaimed();
   }, [address, provider, setClaimed]);
