@@ -15,7 +15,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { DEFAULT_NETWORK, networkConfig } from "../utils/blockchain";
 import { Networks } from "../utils/blockchain";
 import { messages } from "../utils/shared";
-import { swithNetwork } from "../utils/switch-network";
+import { switchNetwork } from "../utils/switch-network";
 
 const isBrowser = () => typeof window !== "undefined";
 
@@ -144,10 +144,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
 
     setProviderChainID(chainId);
 
-    if (chainId === Networks.MAINNET) {
-      setProvider(connectedProvider);
-    }
-
+    setProvider(connectedProvider);
     setConnected(true);
 
     return connectedProvider;
@@ -158,7 +155,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
       const shouldSwitch =
         isBrowser() && window.confirm(messages.switch_to_ethereum);
       if (shouldSwitch) {
-        await swithNetwork();
+        await switchNetwork();
         isBrowser() && window.location.reload();
       }
       return true;

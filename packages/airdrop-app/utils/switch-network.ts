@@ -1,9 +1,11 @@
-import { networkConfig, Networks } from "./blockchain";
+import { DEFAULT_NETWORK, networkConfig, Networks } from "./blockchain";
 
 const switchRequest = () => {
   return window.ethereum.request({
     method: "wallet_switchEthereumChain",
-    params: [{ chainId: "0x1" }],
+    params: [
+      { chainId: "0x" + networkConfig[DEFAULT_NETWORK].chainId.toString(16) },
+    ],
   });
 };
 
@@ -12,10 +14,10 @@ const addChainRequest = () => {
     method: "wallet_addEthereumChain",
     params: [
       {
-        chainId: "0x1",
-        chainName: "Ethereum Mainnet",
-        rpcUrls: [networkConfig[Networks.MAINNET].uri],
-        blockExplorerUrls: ["https://etherscan.io/"],
+        chainId: "0x" + networkConfig[DEFAULT_NETWORK].chainId.toString(16),
+        chainName: networkConfig[DEFAULT_NETWORK].chainName,
+        rpcUrls: [networkConfig[DEFAULT_NETWORK].uri],
+        blockExplorerUrls: [networkConfig[DEFAULT_NETWORK].etherscan],
         nativeCurrency: {
           name: "Ethereum",
           symbol: "ETH",
@@ -26,7 +28,7 @@ const addChainRequest = () => {
   });
 };
 
-export const swithNetwork = async () => {
+export const switchNetwork = async () => {
   if (window.ethereum) {
     try {
       await switchRequest();

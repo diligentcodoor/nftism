@@ -14,23 +14,29 @@ export const DEFAULT_NETWORK = Networks.RINKEBY;
 export const networkConfig = {
   [Networks.MAINNET]: {
     airdropContract: "",
+    chainId: 1,
+    chainName: "Ethereum Mainnet",
     uri: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-    etherscan: "https://etherscan.io/tx",
+    etherscan: "https://etherscan.io",
   },
   [Networks.RINKEBY]: {
     airdropContract: "0x155a2B5da8aB175662F64c8cb54e8b0b19a796E6",
+    chainId: 4,
+    chainName: "Rinkeby Testnet",
     uri: "https://rinkeby.infura.io/v3/dd03b0b31e154af88bdd60ade7d6c6d0",
-    etherscan: "https://rinkeby.etherscan.io/tx",
+    etherscan: "https://rinkeby.etherscan.io",
   },
   [Networks.LOCAL]: {
     airdropContract: "0x155a2B5da8aB175662F64c8cb54e8b0b19a796E6",
+    chainId: 31337,
+    chainName: "Local Testnet",
     uri: "http://localhost:8545",
-    etherscan: "https://rinkeby.etherscan.io/tx",
+    etherscan: "https://rinkeby.etherscan.io",
   },
 };
 
 export const etherscanLink = (txnHash: string) => {
-  return `${networkConfig[DEFAULT_NETWORK].etherscan}/${txnHash}`;
+  return `${networkConfig[DEFAULT_NETWORK].etherscan}/tx/${txnHash}`;
 };
 
 export const getGasPrice = async (provider: Provider) => {
