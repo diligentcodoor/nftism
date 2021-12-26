@@ -28,12 +28,14 @@ const ClaimButton: React.FC<Props> = () => {
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [claimed, setClaimed] = useState<boolean>(false);
+  const [wrongNetwork, setWrongNetwork] = useState<boolean>(false);
   const [txnLink, setTxnLink] = useState<string | null>();
   const [buttonText, setButtonText] = useState<string>("Claim");
 
   useEffect(() => {
     if (providerChainID !== DEFAULT_NETWORK) {
       setButtonText("Wrong Network");
+      setWrongNetwork(true);
       checkWrongNetwork();
     }
   }, [providerChainID, checkWrongNetwork, setButtonText]);
@@ -74,11 +76,16 @@ const ClaimButton: React.FC<Props> = () => {
     </Alert>
   ) : (
     <Flex direction="column" align="center">
-      <HeaderButton isLoading={loading} loadingText="Pending" isDisabled={true}>
+      <HeaderButton
+        isLoading={loading}
+        loadingText="Pending"
+        onClick={claim}
+        isDisabled={claimed || wrongNetwork}
+      >
         {buttonText}
       </HeaderButton>
       {txnLink && (
-        <Link mt={5} href={txnLink}>
+        <Link mt={5} href={txnLink} target="_blank" rel="noopener noreferrer">
           View your transaction
         </Link>
       )}
