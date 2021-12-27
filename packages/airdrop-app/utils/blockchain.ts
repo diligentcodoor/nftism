@@ -7,13 +7,13 @@ export enum Networks {
   LOCAL = 31337,
 }
 
-// export const DEFAULT_NETWORK = Networks.MAINNET;
+export const DEFAULT_NETWORK = Networks.MAINNET;
 // export const DEFAULT_NETWORK = Networks.LOCAL;
-export const DEFAULT_NETWORK = Networks.RINKEBY;
+// export const DEFAULT_NETWORK = Networks.RINKEBY;
 
 export const networkConfig = {
   [Networks.MAINNET]: {
-    airdropContract: "",
+    airdropContract: "0x11ae08fC5124b244451884926baFe857316f7ccc",
     chainId: 1,
     chainName: "Ethereum Mainnet",
     uri: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
