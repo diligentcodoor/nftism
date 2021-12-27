@@ -61,6 +61,10 @@ const config: HardhatUserConfig = {
       url: process.env.RINKEBY_URL || "",
       accounts,
     },
+    mainnet: {
+      url: process.env.MAINNET_URL || "",
+      accounts,
+    },
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
