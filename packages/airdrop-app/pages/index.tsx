@@ -5,7 +5,7 @@ import Hero from "../components/sections/Hero";
 const Home: NextPage = () => {
   return (
     <LandingLayout>
-      <Hero title="" subtitle="" image="/mutts.webp" ctaText="" ctaLink="" />
+      <Hero title="" subtitle="" image="/nftism.gif" ctaText="" ctaLink="" />
     </LandingLayout>
   );
 };

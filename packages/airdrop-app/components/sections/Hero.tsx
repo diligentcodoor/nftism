@@ -37,12 +37,13 @@ const Hero: React.FC<HeroProps> = ({
       px={8}
       my={16}
     >
-      <Box w={{ base: "80%", sm: "60%", md: "30%" }} mb={5}>
-        <Image src={image} alt="CryptoMutts" size="100%" />
+      <Box w={{ base: "80%", sm: "80%", md: "60%" }} mb={5}>
+        <Image rounded="lg" src={image} alt="NFTism" size="100%" />
       </Box>
-      <Heading mb={5} size="xl">
-        NFTism Airdrop
+      <Heading mb={5} size="2xl">
+        Airdrop
       </Heading>
+
       {connected ? <Eligibility /> : <ConnectButton />}
     </Flex>
   );

@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, Box, Image, HStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useWeb3Context } from "../../hooks/web3-context";
 import { getSnapshotEntry } from "../../utils/getSnapshotEntry";
@@ -30,9 +30,21 @@ function Eligibility() {
     <Text>{"You have already claimed your airdrop"}</Text>
   ) : eligible ? (
     <Flex direction="column" align="center">
-      <Text mb={4}>
-        You are eligible to claim {getSnapshotEntry(address).amount} NFTism
-      </Text>
+      <HStack spacing="5px" alignItems="center" mb={5}>
+        <Box>
+          <Text>
+            You are eligible to claim {getSnapshotEntry(address).amount}
+          </Text>
+        </Box>
+        <Box w="20px">
+          <Image
+            rounded="full"
+            src="/nftism-token.jpeg"
+            alt="CryptoMutts"
+            size="100%"
+          />
+        </Box>
+      </HStack>
       <ClaimButton />
     </Flex>
   ) : (
