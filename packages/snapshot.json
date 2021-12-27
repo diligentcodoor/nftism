@@ -1,5 +1,9 @@
 [
   {
+    "address": "0x8399e9cb6d4309D345161572234C75fBDbc66aED",
+    "amount": 700
+  },
+  {
     "address": "0xe373e99Ca54DfDD8A740481218eE8321c7A99e83",
     "amount": 700
   },
@@ -21,7 +25,7 @@
   },
   {
     "address": "0x74f22345c476B22F4bbD926889ed2ab2284bDaa9",
-    "amount": 11100
+    "amount": 10500
   },
   {
     "address": "0xE7d6c8e99cC5CCf2e90C26DA74863AFAECF6cAB6",
@@ -2657,10 +2661,6 @@
   },
   {
     "address": "0x92F866391027101fDA1C539b8fD33B59A8fe57C9",
-    "amount": 100
-  },
-  {
-    "address": "0x000000000000000000000000000000000000dEaD",
     "amount": 100
   },
   {
