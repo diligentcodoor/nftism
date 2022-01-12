@@ -1,0 +1,5 @@
+[submodule "packages/hashlips_art_engine"]
+	path = packages/huxlxy-airdrop/hashlips_art_engine
+	url = git@github.com:HashLips/hashlips_art_engine.git
+	ignore = dirty
+
