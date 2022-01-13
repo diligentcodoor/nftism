@@ -3,3 +3,6 @@
 	url = git@github.com:HashLips/hashlips_art_engine.git
 	ignore = dirty
 
+[submodule "packages/foundry/lib/solmate"]
+	path = packages/foundry/lib/solmate
+	url = https://github.com/rari-capital/solmate
