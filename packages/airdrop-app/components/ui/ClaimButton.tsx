@@ -17,6 +17,7 @@ import {
 import { AIRDROP_ABI } from "../../utils/constants";
 import { getSnapshotEntry } from "../../utils/getSnapshotEntry";
 import { generateMerkleProof } from "../../../lib/merkle";
+import { MerkleTree } from "merkletreejs";
 import HeaderButton from "./HeaderButton";
 import { TransactionResponse } from "@ethersproject/providers";
 import { AirdropType } from "../../../lib/snapshot";
