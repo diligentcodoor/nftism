@@ -9,6 +9,7 @@ import {
   MUTTS_ADDRESS,
   NIFTY_GATEWAY_WALLET,
 } from "./constants";
+import path from "path/posix";
 
 type BalanceMap = Record<string, number>;
 
@@ -119,7 +120,7 @@ export const generateSnapshot = async (
   const tokensAirdropped = snapshot.reduce((acc, curr) => acc + curr.amount, 0);
   console.log("Total Tokens being airdropped:", tokensAirdropped);
   writeFileSync(
-    `${airdropType}-snapshot.json`,
+    path.resolve(__dirname, `${airdropType}-snapshot.json`),
     JSON.stringify(snapshot, null, 2)
   );
   console.log("Snapshot generated");
@@ -128,12 +129,17 @@ export const generateSnapshot = async (
 export const generateBalances = (airdropType: AirdropType): void => {
   const balances: Record<string, BalanceEntry> = {};
   const snapshot: SnapshotEntry[] = JSON.parse(
-    readFileSync(`${airdropType}-snapshot.json`).toString()
+    readFileSync(
+      path.resolve(__dirname, `${airdropType}-snapshot.json`)
+    ).toString()
   );
   for (let i = 0; i < snapshot.length; i++) {
     const { address, amount } = snapshot[i];
     balances[address] = { amount, merkleIndex: i };
     console.log("Address: ", address, "Balance: ", balances[address]);
   }
-  writeFileSync(`${airdropType}-balances.json`, JSON.stringify(balances));
+  writeFileSync(
+    path.resolve(__dirname, `${airdropType}-balances.json`),
+    JSON.stringify(balances, null, 2)
+  );
 };
