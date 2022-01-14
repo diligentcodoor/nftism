@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": ["es5", "es6", "esnext"],
     "target": "es5",
-    "module": "commonjs",
+    "module": "amd",
     "moduleResolution": "node",
     "outDir": "./dist",
     "emitDecoratorMetadata": true,
@@ -11,6 +11,8 @@
     "esModuleInterop": true,
     "strict": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./types", "./node_modules/@types"]
+    "declaration": true,
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "outFile": "./dist/index.js"
   }
 }

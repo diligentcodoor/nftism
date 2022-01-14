@@ -2,7 +2,7 @@ import { MerkleTree } from "merkletreejs";
 import keccak256 from "keccak256";
 import { utils } from "ethers";
 
-import { AirdropType, SnapshotEntry } from "./snapshot";
+import { AirdropType, SnapshotEntry } from "./types";
 import { readFileSync } from "fs";
 
 export const elements = (

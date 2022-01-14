@@ -16,11 +16,11 @@ import {
 } from "../../utils/blockchain";
 import { AIRDROP_ABI } from "../../utils/constants";
 import { getSnapshotEntry } from "../../utils/getSnapshotEntry";
-import { generateMerkleProof } from "../../../lib/merkle";
-import { MerkleTree } from "merkletreejs";
 import HeaderButton from "./HeaderButton";
 import { TransactionResponse } from "@ethersproject/providers";
-import { AirdropType } from "../../../lib/snapshot";
+import { generateMerkleProof } from "../../utils/merkleProof";
+import { AirdropType } from "../../../lib/src/types";
+import axios from "axios";
 
 interface Props {}
 

@@ -9,19 +9,10 @@ import {
   MUTTS_ADDRESS,
   NIFTY_GATEWAY_WALLET,
 } from "./constants";
-import path from "path/posix";
+import path from "path";
+import { AirdropType, BalanceEntry, SnapshotEntry } from "./types";
 
 type BalanceMap = Record<string, number>;
-
-export interface SnapshotEntry {
-  address: string;
-  amount: number;
-}
-
-export interface BalanceEntry {
-  amount: number;
-  merkleIndex: number;
-}
 
 interface NiftyGatewayResponse {
   next: string | null;
@@ -30,11 +21,6 @@ interface NiftyGatewayResponse {
 
 interface NiftyGatewayResult {
   owner: { airdropAddressEth: string };
-}
-
-export enum AirdropType {
-  NFTism = "nftism",
-  Huxlxy = "huxlxy",
 }
 
 async function ngHolders(balances: BalanceMap) {

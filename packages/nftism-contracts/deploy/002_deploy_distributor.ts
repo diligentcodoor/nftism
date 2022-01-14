@@ -1,8 +1,8 @@
 import { ethers } from "hardhat";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { generateMerkleTree } from "../../lib/merkle";
-import { AirdropType } from "../../lib/snapshot";
+import { generateMerkleTree } from "../../lib/src/merkle";
+import { AirdropType } from "../../lib/src/types";
 
 const NFTISM_ABI = [
   "function transfer(address recipient, uint256 amount) public returns (bool)",
