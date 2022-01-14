@@ -16,9 +16,10 @@ import {
 } from "../../utils/blockchain";
 import { AIRDROP_ABI } from "../../utils/constants";
 import { getSnapshotEntry } from "../../utils/getSnapshotEntry";
-import { generateMerkleProof } from "../../utils/merkle";
+import { generateMerkleProof } from "../../../lib/merkle";
 import HeaderButton from "./HeaderButton";
 import { TransactionResponse } from "@ethersproject/providers";
+import { AirdropType } from "../../../lib/snapshot";
 
 interface Props {}
 
@@ -47,7 +48,7 @@ const ClaimButton: React.FC<Props> = () => {
       provider.getSigner()
     );
     const { amount, merkleIndex } = getSnapshotEntry(address);
-    const merkleProof = generateMerkleProof(merkleIndex);
+    const merkleProof = generateMerkleProof(merkleIndex, AirdropType.NFTism);
 
     try {
       setLoading(true);

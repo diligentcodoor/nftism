@@ -1,21 +1,21 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { utils } from "ethers";
 
 import { MerkleTree } from "merkletreejs";
-import keccak256 from "keccak256";
 import {
   MerkleDistributor,
   MerkleDistributor__factory,
   NFTism,
   NFTism__factory,
 } from "../typechain";
+import { elements, generateMerkleTree } from "../../lib/merkle";
+import { AirdropType, SnapshotEntry } from "../../lib/snapshot";
 
 const ZERO_BYTES32 =
   "0x0000000000000000000000000000000000000000000000000000000000000000";
 
 describe("MerkleDistributor", function () {
-  const users = [
+  const users: SnapshotEntry[] = [
     { address: "0xD08c8e6d78a1f64B1796d6DC3137B19665cb6F1F", amount: 100 },
     { address: "0xb7D15753D3F76e7C892B63db6b4729f700C01298", amount: 15 },
     { address: "0xf69Ca530Cd4849e3d1329FBEC06787a96a3f9A68", amount: 20 },
@@ -23,9 +23,7 @@ describe("MerkleDistributor", function () {
   ];
 
   // equal to MerkleDistributor.sol #keccak256(abi.encodePacked(account, amount));
-  const elements = users.map((user) =>
-    utils.solidityKeccak256(["address", "uint256"], [user.address, user.amount])
-  );
+  const _elements = elements(AirdropType.NFTism, users);
 
   let Distributor: MerkleDistributor__factory;
   let distributor: MerkleDistributor;
@@ -58,9 +56,9 @@ describe("MerkleDistributor", function () {
 
   describe("#claim", () => {
     beforeEach("Deploy the distributor", async () => {
-      merkleTree = new MerkleTree(elements, keccak256, { sort: true });
+      merkleTree = generateMerkleTree(AirdropType.NFTism, users);
       const root = merkleTree.getHexRoot();
-      leaf = elements[3];
+      leaf = _elements[3];
       proof = merkleTree.getHexProof(leaf);
       distributor = await Distributor.deploy(nftism.address, root);
       await distributor.deployed();
@@ -79,8 +77,8 @@ describe("MerkleDistributor", function () {
     });
 
     it("transfers the token", async () => {
-      merkleTree = new MerkleTree(elements, keccak256, { sort: true });
-      leaf = elements[0];
+      merkleTree = generateMerkleTree(AirdropType.NFTism, users);
+      leaf = _elements[0];
       proof = merkleTree.getHexProof(leaf);
 
       expect(await nftism.balanceOf(users[0].address)).to.eq(0);
@@ -91,9 +89,9 @@ describe("MerkleDistributor", function () {
     });
 
     it("must have enough to transfer", async () => {
-      merkleTree = new MerkleTree(elements, keccak256, { sort: true });
+      merkleTree = generateMerkleTree(AirdropType.NFTism, users);
       const root = merkleTree.getHexRoot();
-      leaf = elements[0];
+      leaf = _elements[0];
       proof = merkleTree.getHexProof(leaf);
       distributor = await Distributor.deploy(nftism.address, root);
       await distributor.deployed();

@@ -1,28 +1,39 @@
-import { ethers } from "hardhat";
-import { writeFileSync } from "fs";
+import { ethers } from "ethers";
+import { readFileSync, writeFileSync } from "fs";
 import axios from "axios";
-
-const MUTTS_ADDRESS = "0x25C65721E26fa5F3c97f129F4e24972482327BC9";
-const MUTTS_ABI = [
-  "function ownerOf(uint256 tokenId) public view returns (address)",
-  "function balanceOf(address owner) public view returns (uint256)",
-  "function totalSupply() public view returns (uint256)",
-];
-const NIFTY_GATEWAY_WALLET = "0xE052113bd7D7700d623414a0a4585BCaE754E9d5";
+import {
+  HUXLXY_WALLET,
+  JWALLET,
+  KENNY_WALLET,
+  MUTTS_ABI,
+  MUTTS_ADDRESS,
+  NIFTY_GATEWAY_WALLET,
+} from "./constants";
 
 type BalanceMap = Record<string, number>;
 
-interface SnapshotEntry {
+export interface SnapshotEntry {
   address: string;
   amount: number;
+}
+
+export interface BalanceEntry {
+  amount: number;
+  merkleIndex: number;
 }
 
 interface NiftyGatewayResponse {
   next: string | null;
   results: NiftyGatewayResult[];
 }
+
 interface NiftyGatewayResult {
   owner: { airdropAddressEth: string };
+}
+
+export enum AirdropType {
+  NFTism = "nftism",
+  Huxlxy = "huxlxy",
 }
 
 async function ngHolders(balances: BalanceMap) {
@@ -40,7 +51,7 @@ async function ngHolders(balances: BalanceMap) {
           owner: { airdropAddressEth },
         } = result;
         if (airdropAddressEth === "null" || airdropAddressEth === null) {
-          airdropAddressEth = "0x74f22345c476B22F4bbD926889ed2ab2284bDaa9";
+          airdropAddressEth = JWALLET;
         }
         airdropAddressEth = ethers.utils.getAddress(airdropAddressEth);
         balances[airdropAddressEth] = balances[airdropAddressEth] || 0;
@@ -79,24 +90,50 @@ async function muttsHolders(balances: BalanceMap) {
   }
 }
 
-async function main() {
+const adjustBalances = (balances: BalanceMap): void => {
+  balances[KENNY_WALLET] = 150;
+  balances[HUXLXY_WALLET] = 850;
+  const tokensAirdropped = Object.values(balances).reduce(
+    (acc, balance) => acc + balance,
+    0
+  );
+  balances["0x74f22345c476B22F4bbD926889ed2ab2284bDaa9"] +=
+    10000 - tokensAirdropped;
+};
+
+export const generateSnapshot = async (
+  airdropType: AirdropType
+): Promise<void> => {
   const balances: BalanceMap = {};
   console.log("Generating Snapshot");
   await ngHolders(balances);
   await muttsHolders(balances);
+  if (airdropType === AirdropType.Huxlxy) {
+    adjustBalances(balances);
+  }
   const snapshot: SnapshotEntry[] = Object.keys(balances).map((address) => ({
     address,
-    amount: balances[address] * 100,
+    amount: balances[address],
   }));
-  console.log(
-    "Total Tokens being airdropped:",
-    snapshot.reduce((acc, curr) => acc + curr.amount, 0)
-  );
-  writeFileSync("snapshot.json", JSON.stringify(snapshot, null, 2));
-  console.log("Snapshot generated");
-}
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+  const tokensAirdropped = snapshot.reduce((acc, curr) => acc + curr.amount, 0);
+  console.log("Total Tokens being airdropped:", tokensAirdropped);
+  writeFileSync(
+    `${airdropType}-snapshot.json`,
+    JSON.stringify(snapshot, null, 2)
+  );
+  console.log("Snapshot generated");
+};
+
+export const generateBalances = (airdropType: AirdropType): void => {
+  const balances: Record<string, BalanceEntry> = {};
+  const snapshot: SnapshotEntry[] = JSON.parse(
+    readFileSync(`${airdropType}-snapshot.json`).toString()
+  );
+  for (let i = 0; i < snapshot.length; i++) {
+    const { address, amount } = snapshot[i];
+    balances[address] = { amount, merkleIndex: i };
+    console.log("Address: ", address, "Balance: ", balances[address]);
+  }
+  writeFileSync(`${airdropType}-balances.json`, JSON.stringify(balances));
+};

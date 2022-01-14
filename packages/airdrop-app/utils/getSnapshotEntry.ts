@@ -1,11 +1,7 @@
-import _balances from "../../balances.json";
+import _balances from "../../lib/nftism-balances.json";
+import { BalanceEntry } from "../../lib/snapshot";
 
-interface SnapshotEntry {
-  amount: number;
-  merkleIndex: number;
-}
-
-export const getSnapshotEntry = (address: string): SnapshotEntry => {
-  const entries = _balances as Record<string, SnapshotEntry>;
+export const getSnapshotEntry = (address: string): BalanceEntry => {
+  const entries = _balances as Record<string, BalanceEntry>;
   return entries[address] || { amount: 0, merkleIndex: -1 };
 };

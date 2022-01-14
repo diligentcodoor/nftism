@@ -1,7 +1,8 @@
 import { ethers } from "hardhat";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { generateMerkleTree } from "../scripts/utils";
+import { generateMerkleTree } from "../../lib/merkle";
+import { AirdropType } from "../../lib/snapshot";
 
 const NFTISM_ABI = [
   "function transfer(address recipient, uint256 amount) public returns (bool)",
@@ -21,7 +22,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     owner
   );
 
-  const merkleTree = generateMerkleTree();
+  const merkleTree = generateMerkleTree(AirdropType.NFTism);
 
   const deployment = await deploy("MerkleDistributor", {
     from: deployer,
