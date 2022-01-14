@@ -15,10 +15,6 @@
   },
   "dependencies": {
     "@types/pngjs": "^6.0.1",
-    "ethers": "^5.5.2",
-    "keccak256": "^1.0.6",
-    "merkletreejs": "^0.2.27",
-    "pngjs": "^6.0.0",
-    "winston": "^3.3.3"
+    "pngjs": "^6.0.0"
   }
 }
