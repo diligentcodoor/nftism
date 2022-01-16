@@ -20,7 +20,6 @@ import HeaderButton from "./HeaderButton";
 import { TransactionResponse } from "@ethersproject/providers";
 import { generateMerkleProof } from "../../utils/merkleProof";
 import { AirdropType } from "../../../lib/src/types";
-import axios from "axios";
 
 interface Props {}
 

@@ -4,6 +4,7 @@ import { utils } from "ethers";
 
 import { AirdropType, SnapshotEntry } from "./types";
 import { readFileSync } from "fs";
+import path from "path";
 
 export const elements = (
   airdropType: AirdropType,
@@ -11,7 +12,11 @@ export const elements = (
 ): string[] => {
   const users =
     _users ??
-    JSON.parse(readFileSync(`${airdropType}-snapshot.json`).toString());
+    JSON.parse(
+      readFileSync(
+        path.resolve(__dirname, "..", `${airdropType}-snapshot.json`)
+      ).toString()
+    );
   return users.map((user: SnapshotEntry) =>
     utils.solidityKeccak256(["address", "uint256"], [user.address, user.amount])
   );
