@@ -1,1 +1,4 @@
-@openzeppelin/=/Users/jeasterman/code/jeasterman/nftism/packages/foundry/lib/openzeppelin-contracts/
+ds-test/=/Users/jeasterman/code/jeasterman/nftism/packages/huxlxy-contracts/lib/ds-test/src/
+solmate/=/Users/jeasterman/code/jeasterman/nftism/packages/huxlxy-contracts/lib/solmate/src/
+weird-erc20/=/Users/jeasterman/code/jeasterman/nftism/packages/huxlxy-contracts/lib/solmate/lib/weird-erc20/src/
+@openzeppelin/=/Users/jeasterman/code/jeasterman/nftism/packages/huxlxy-contracts/lib/openzeppelin-contracts/
