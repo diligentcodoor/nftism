@@ -12,3 +12,6 @@
 [submodule "packages/huxlxy-contracts/lib/solmate"]
 	path = packages/huxlxy-contracts/lib/solmate
 	url = https://github.com/rari-capital/solmate
+[submodule "packages/castles-hashlips"]
+	path = packages/castles-hashlips
+	url = git@github.com:HashLips/hashlips_art_engine.git
