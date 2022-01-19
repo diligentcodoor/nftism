@@ -12,6 +12,8 @@ import {
   Web3Provider,
 } from "@ethersproject/providers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import WalletLink from "walletlink";
+
 import { DEFAULT_NETWORK, networkConfig } from "../utils/blockchain";
 import { Networks } from "../utils/blockchain";
 import { messages } from "../utils/shared";
@@ -82,6 +84,18 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
           walletconnect: {
             package: WalletConnectProvider,
             options: {
+              rpc: {
+                [Networks.LOCAL]: networkConfig[Networks.LOCAL].uri,
+                [Networks.MAINNET]: networkConfig[Networks.MAINNET].uri,
+                [Networks.RINKEBY]: networkConfig[Networks.RINKEBY].uri,
+              },
+            },
+          },
+          walletlink: {
+            package: WalletLink,
+            options: {
+              appName: "CryptoMutts Airdrop",
+              infuraId: "dd03b0b31e154af88bdd60ade7d6c6d0",
               rpc: {
                 [Networks.LOCAL]: networkConfig[Networks.LOCAL].uri,
                 [Networks.MAINNET]: networkConfig[Networks.MAINNET].uri,
