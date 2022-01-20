@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Spacer } from "@chakra-ui/react";
 import HeadSection from "../sections/HeadSection";
 import Header from "../sections/Header";
 import Footer from "../sections/Footer";
@@ -12,14 +12,14 @@ interface Props {
 const LandingLayout: React.FC<Props> = ({ children }) => (
   <Flex
     bg="white"
-    color="black"
     direction="column"
     align="center"
     m="0 auto"
-    // className={styles.animate}
+    className={styles.animate}
   >
     <HeadSection />
     <Header />
+    <Spacer m={2} />
     {children}
     {/* <Footer /> */}
   </Flex>

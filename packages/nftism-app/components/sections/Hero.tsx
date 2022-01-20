@@ -8,9 +8,6 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import ConnectButton from "../ui/ConnectButton";
-import { useWeb3Context } from "../../hooks/web3-context";
-import Eligibility from "../ui/Eligibility";
 
 interface HeroProps {
   title: string;
@@ -27,7 +24,6 @@ const Hero: React.FC<HeroProps> = ({
   ctaText = "",
   ctaLink = "",
 }) => {
-  const { connected } = useWeb3Context();
   return (
     <Flex
       align="center"
@@ -35,16 +31,53 @@ const Hero: React.FC<HeroProps> = ({
       direction={{ base: "column", md: "column" }}
       wrap="nowrap"
       px={8}
-      my={16}
+      mb={16}
     >
-      <Box w={{ base: "80%", sm: "80%", md: "60%" }} mb={5}>
-        <Image rounded="lg" src={image} alt="NFTism" size="100%" />
+      <Box w={{ base: "80%", sm: "60%", md: "60%" }} mb={{ base: 12, md: 0 }}>
+        <Image src={image} alt="NFTism" size="100%" rounded="full" />
       </Box>
-      <Heading mb={5} size="2xl">
-        Airdrop
-      </Heading>
-
-      {connected ? <Eligibility /> : <ConnectButton />}
+      <Stack spacing={4} w={{ base: "80%", md: "40%" }} align={["center"]}>
+        {/* <Heading
+          as="h1"
+          size="xl"
+          fontWeight="bold"
+          color="gray.700"
+          textAlign={["center"]}
+        >
+          {title}
+        </Heading> */}
+        <Heading
+          as="h2"
+          size="md"
+          opacity="0.8"
+          color="black"
+          fontWeight="normal"
+          lineHeight={1.5}
+          textAlign={["center"]}
+        >
+          {subtitle}
+        </Heading>
+        <Link href={ctaLink} passHref>
+          <Button
+            size="md"
+            rounded="md"
+            variant="outline"
+            colorScheme="blue"
+            lineHeight="1"
+          >
+            {ctaText}
+          </Button>
+        </Link>
+        <Text
+          fontSize="xs"
+          mt={2}
+          textAlign="center"
+          color="gray.700"
+          opacity="0.6"
+        >
+          Beware of Metadada.
+        </Text>
+      </Stack>
     </Flex>
   );
 };

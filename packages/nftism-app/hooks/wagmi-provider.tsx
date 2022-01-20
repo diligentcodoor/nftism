@@ -10,7 +10,6 @@ const chains = defaultChains;
 
 // Set up connectors
 const connectors = ({ chainId }: { chainId: number }) => {
-  console.log(chains);
   const rpcUrl =
     chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
     chain.mainnet.rpcUrls[0];
