@@ -9,8 +9,8 @@ export enum Networks {
 }
 
 // export const DEFAULT_NETWORK = Networks.MAINNET;
-export const DEFAULT_NETWORK = Networks.LOCAL;
-// export const DEFAULT_NETWORK = Networks.RINKEBY;
+// export const DEFAULT_NETWORK = Networks.LOCAL;
+export const DEFAULT_NETWORK = Networks.RINKEBY;
 
 export const networkConfig = {
   [Networks.MAINNET]: {
@@ -26,7 +26,7 @@ export const networkConfig = {
   [Networks.RINKEBY]: {
     airdropContract: {
       [AirdropType.NFTism]: "0x155a2B5da8aB175662F64c8cb54e8b0b19a796E6",
-      [AirdropType.Huxlxy]: "",
+      [AirdropType.Huxlxy]: "0x0FAd84f29571AbE9A44487555011A866907c5FfD",
     },
     chainId: 4,
     chainName: "Rinkeby Testnet",
