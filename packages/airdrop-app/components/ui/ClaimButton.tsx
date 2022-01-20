@@ -14,16 +14,18 @@ import {
   etherscanLink,
   networkConfig,
 } from "../../utils/blockchain";
-import { AIRDROP_ABI } from "../../utils/constants";
+import { AIRDROP_ABIS } from "../../utils/constants";
 import { getSnapshotEntry } from "../../utils/getSnapshotEntry";
 import HeaderButton from "./HeaderButton";
 import { TransactionResponse } from "@ethersproject/providers";
 import { generateMerkleProof } from "../../utils/merkleProof";
 import { AirdropType } from "../../../lib/src/types";
+import { useAirdrop } from "../../hooks/airdrop";
 
 interface Props {}
 
 const ClaimButton: React.FC<Props> = () => {
+  const airdropType = useAirdrop();
   const { address, provider, providerChainID, checkWrongNetwork } =
     useWeb3Context();
   const [error, setError] = useState<boolean>(false);
@@ -43,20 +45,19 @@ const ClaimButton: React.FC<Props> = () => {
 
   const claim = useCallback(async () => {
     const airdrop = new ethers.Contract(
-      networkConfig[DEFAULT_NETWORK].airdropContract,
-      AIRDROP_ABI,
+      networkConfig[DEFAULT_NETWORK].airdropContract[airdropType],
+      AIRDROP_ABIS[airdropType],
       provider.getSigner()
     );
-    const { amount, merkleIndex } = getSnapshotEntry(address);
-    const merkleProof = generateMerkleProof(merkleIndex, AirdropType.NFTism);
+    const { amount, merkleIndex } = getSnapshotEntry(address, airdropType);
+    const merkleProof = generateMerkleProof(merkleIndex, airdropType);
 
     try {
       setLoading(true);
-      const claimTx: TransactionResponse = await airdrop.claim(
-        address,
-        amount,
-        merkleProof
-      );
+      const claimTx: TransactionResponse =
+        airdropType === AirdropType.NFTism
+          ? await airdrop.claim(address, amount, merkleProof)
+          : await airdrop.mint(address, amount, merkleProof);
       setTxnLink(etherscanLink(claimTx.hash));
       await claimTx.wait();
       setLoading(false);
@@ -65,7 +66,7 @@ const ClaimButton: React.FC<Props> = () => {
     } catch (e: any) {
       setError(true);
     }
-  }, [address, provider, setLoading, setClaimed]);
+  }, [airdropType, address, provider, setLoading, setClaimed]);
 
   return error ? (
     <Alert status="error">

@@ -13,17 +13,19 @@ import { useWeb3Context } from "../../hooks/web3-context";
 import Eligibility from "../ui/Eligibility";
 
 interface HeroProps {
-  title: string;
+  title?: string;
   subtitle: string;
-  image: string;
+  image?: string;
+  gif?: string;
   ctaText: string;
   ctaLink: string;
 }
 
 const Hero: React.FC<HeroProps> = ({
-  title = "",
+  title,
   subtitle = "",
-  image = "",
+  image,
+  gif,
   ctaText = "",
   ctaLink = "",
 }) => {
@@ -33,16 +35,19 @@ const Hero: React.FC<HeroProps> = ({
       align="center"
       justify={{ base: "center", md: "space-around", xl: "space-between" }}
       direction={{ base: "column", md: "column" }}
-      wrap="nowrap"
       px={8}
       my={16}
     >
       <Box w={{ base: "80%", sm: "80%", md: "60%" }} mb={5}>
-        <Image rounded="lg" src={image} alt="NFTism" size="100%" />
+        {image && <Image rounded="lg" src={image} alt="NFTism" size="100%" />}
       </Box>
+      {title && <Heading size="2xl">{title}</Heading>}
       <Heading mb={5} size="2xl">
         Airdrop
       </Heading>
+      <Box w={{ base: "80%", sm: "80%", md: "40%" }} mb={5}>
+        {gif && <Image rounded="lg" src={gif} alt="Huxlxy" size="100%" />}
+      </Box>
 
       {connected ? <Eligibility /> : <ConnectButton />}
     </Flex>
