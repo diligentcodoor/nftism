@@ -8,7 +8,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spacer,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useAccount, useConnect } from "wagmi";

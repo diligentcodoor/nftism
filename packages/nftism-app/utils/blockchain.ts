@@ -7,6 +7,10 @@ export enum Networks {
   LOCAL = 31337,
 }
 
+export const ERC20_ABI = [
+  "function balanceOf(address) public view returns (uint256)",
+];
+
 // export const DEFAULT_NETWORK = Networks.MAINNET;
 export const DEFAULT_NETWORK = Networks.LOCAL;
 // export const DEFAULT_NETWORK = Networks.RINKEBY;
