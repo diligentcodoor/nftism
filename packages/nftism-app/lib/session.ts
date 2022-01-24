@@ -6,9 +6,7 @@ export type User = {
 };
 
 export const sessionOptions: IronSessionOptions = {
-  password:
-    (process.env.SECRET_COOKIE_PASSWORD as string) ||
-    "https://github.com/vercel/next.js/blob/canary/examples/with-iron-session/lib/fetchJson.ts",
+  password: process.env.SECRET_COOKIE_PASSWORD as string,
   cookieName: "nftism-session",
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
