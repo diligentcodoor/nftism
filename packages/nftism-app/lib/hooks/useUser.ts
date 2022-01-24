@@ -3,15 +3,7 @@ import Router from "next/router";
 import useSWR from "swr";
 
 import { User } from "@lib/session";
-import fetchJson from "@lib/api/fetchJson";
-
-const fetcher = async (): Promise<User> => {
-  const user: User = await fetchJson("/api/user", {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-  return user;
-};
+import { fetchUser } from "@lib/api/fetchUser";
 
 export default function useUser({
   redirectTo = "",
@@ -21,7 +13,7 @@ export default function useUser({
     data: user,
     mutate: mutateUser,
     error,
-  } = useSWR<User>("/api/user", fetcher);
+  } = useSWR<User>("/api/user", fetchUser);
 
   useEffect(() => {
     // if no redirect needed, just return (example: already on /dashboard)
