@@ -5,6 +5,7 @@ import { formatEther, verifyMessage } from "ethers/lib/utils";
 
 import { sessionOptions, User } from "@lib/session";
 import { ERC20_ABI, networkConfig, Networks } from "@lib/blockchain";
+import { NFTISM_LOGIN_MESSAGE } from "@lib/constants";
 
 export default withIronSessionApiRoute(loginRoute, sessionOptions);
 
@@ -12,7 +13,7 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   const { signature } = await req.body;
 
   try {
-    const address = verifyMessage("hello", signature);
+    const address = verifyMessage(NFTISM_LOGIN_MESSAGE, signature);
     const balance = await new ethers.Contract(
       networkConfig[Networks.MAINNET].nftismContract,
       ERC20_ABI,

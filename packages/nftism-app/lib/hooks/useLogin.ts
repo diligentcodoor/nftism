@@ -3,6 +3,7 @@ import { useSignMessage } from "wagmi";
 
 import useUser from "@lib/hooks/useUser";
 import fetchJson, { FetchError } from "@lib/api/fetchJson";
+import { NFTISM_LOGIN_MESSAGE } from "@lib/constants";
 
 export default function useLogin() {
   // here we just check if user is already logged in and redirect to profile
@@ -18,7 +19,7 @@ export default function useLogin() {
 
     const login = async () => {
       try {
-        const { data } = await signMessage({ message: "hello" });
+        const { data } = await signMessage({ message: NFTISM_LOGIN_MESSAGE });
         const body = { signature: data };
         mutateUser(
           await fetchJson("/api/login", {
