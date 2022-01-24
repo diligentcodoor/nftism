@@ -1,10 +1,10 @@
-import { withIronSessionApiRoute } from "iron-session/next";
-import { sessionOptions } from "../../lib/session";
 import { NextApiRequest, NextApiResponse } from "next";
-import { User } from "../../lib/session";
-import { formatEther, verifyMessage } from "ethers/lib/utils";
+import { withIronSessionApiRoute } from "iron-session/next";
 import { ethers } from "ethers";
-import { ERC20_ABI, networkConfig, Networks } from "../../utils/blockchain";
+import { formatEther, verifyMessage } from "ethers/lib/utils";
+
+import { sessionOptions, User } from "@lib/session";
+import { ERC20_ABI, networkConfig, Networks } from "@lib/blockchain";
 
 export default withIronSessionApiRoute(loginRoute, sessionOptions);
 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSignMessage } from "wagmi";
 
-import useUser from "./useUser";
-import fetchJson, { FetchError } from "./fetch-json";
+import useUser from "@lib/hooks/useUser";
+import fetchJson, { FetchError } from "@lib/api/fetchJson";
 
 export default function useLogin() {
   // here we just check if user is already logged in and redirect to profile

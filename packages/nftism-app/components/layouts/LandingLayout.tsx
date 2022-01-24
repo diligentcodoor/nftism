@@ -1,10 +1,11 @@
 import { Flex, Spacer } from "@chakra-ui/react";
-import HeadSection from "../sections/HeadSection";
-import Header from "../sections/Header";
-import Footer from "../sections/Footer";
+import HeadSection from "@components/sections/HeadSection";
+import Header from "@components/sections/Header";
+import Footer from "@components/sections/Footer";
+
+import useLogin from "@lib/hooks/useLogin";
 
 import styles from "../../styles/LandingLayout.module.scss";
-import useLogin from "@lib/useLogin";
 
 interface Props {
   children?: React.ReactNode;

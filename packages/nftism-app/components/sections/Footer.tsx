@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { FaDiscord, FaTwitter } from "react-icons/fa";
-import { DISCORD_LINK, TWITTER_LINK } from "../../utils/constants";
-import SocialLink from "../ui/SocialLink";
+import { DISCORD_LINK, TWITTER_LINK } from "@lib/constants";
+import SocialLink from "@components/ui/SocialLink";
 
 const Footer: React.FC = () => {
   return (

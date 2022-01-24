@@ -5,9 +5,14 @@ import Link from "next/link";
 
 export default function Logo(props: any) {
   return (
-    <Box {...props} rounded="full" cursor="pointer" overflow="hidden">
+    <Box cursor="pointer">
       <Link href="/" passHref>
-        <Image src="/logo.jpg" height="100%" width="100%" alt="logo" />
+        <Image
+          width={100}
+          height={33}
+          src="/nftism-logo.png"
+          alt="NFTism Logo"
+        />
       </Link>
     </Box>
   );

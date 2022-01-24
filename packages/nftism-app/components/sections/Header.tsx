@@ -7,16 +7,12 @@ import {
   IconButton,
   Button,
   useDisclosure,
-  useColorModeValue,
   Stack,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons";
 
-// import Logo from "../ui/Logo";
-// import ConnectButton from "../ui/ConnectButton";
-import Image from "next/image";
-import { useWagmiModal } from "../../hooks/wagmi-provider";
-import { ConnectButton } from "../ui/ConnectButton";
+import { ConnectButton } from "@components/ui/ConnectButton";
+import Logo from "@components/ui/Logo";
 
 type NamedLink = {
   name: string;
@@ -53,9 +49,7 @@ const Header: React.FC = () => {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box>
-              <Image width={100} height={33} src="/nftism-logo.png" />
-            </Box>
+            <Logo />
             <HStack
               as={"nav"}
               spacing={4}
@@ -89,7 +83,4 @@ const Header: React.FC = () => {
   );
 };
 
-// <Logo w="65px" color={["white"]} />
-
-// <ConnectButton />
 export default Header;

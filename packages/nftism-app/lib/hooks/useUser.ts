@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import Router from "next/router";
 import useSWR from "swr";
-import { User } from "./session";
-import fetchJson from "./fetch-json";
+
+import { User } from "@lib/session";
+import fetchJson from "@lib/api/fetchJson";
 
 const fetcher = async (): Promise<User> => {
   const user: User = await fetchJson("/api/user", {

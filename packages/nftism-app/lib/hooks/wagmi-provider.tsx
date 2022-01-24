@@ -1,14 +1,12 @@
-import { useDisclosure } from "@chakra-ui/react";
 import { Provider, chain, defaultChains } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
-import { DEFAULT_NETWORK, INFURA_ID } from "../utils/blockchain";
 
-// Chains for connectors to support
+import { DEFAULT_NETWORK, INFURA_ID } from "@lib/blockchain";
+
 const chains = defaultChains;
 
-// Set up connectors
 const connectors = ({ chainId }: { chainId: number }) => {
   const rpcUrl =
     chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??

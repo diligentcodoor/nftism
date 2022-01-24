@@ -1,10 +1,10 @@
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 
+import WagmiProvider from "@lib/hooks/wagmi-provider";
+import customTheme from "@styles/theme";
+
 import "../styles/globals.css";
-import customTheme from "../utils/theme";
-import WagmiProvider from "../hooks/wagmi-provider";
-import { WagmiModal } from "../components/ui/WagmiModal";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

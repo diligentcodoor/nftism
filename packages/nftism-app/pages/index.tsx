@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 
-import LandingLayout from "../components/layouts/LandingLayout";
-import Hero from "../components/sections/Hero";
+import LandingLayout from "@components/layouts/LandingLayout";
+import Hero from "@components/sections/Hero";
 
 const Home: NextPage = () => {
   return (
