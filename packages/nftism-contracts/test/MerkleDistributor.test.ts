@@ -8,8 +8,8 @@ import {
   NFTism,
   NFTism__factory,
 } from "../typechain";
-import { elements, generateMerkleTree } from "../../lib/merkle";
-import { AirdropType, SnapshotEntry } from "../../lib/snapshot";
+import { elements, generateMerkleTree } from "../../lib/src/merkle";
+import { AirdropType, SnapshotEntry } from "../../lib/src/types";
 
 const ZERO_BYTES32 =
   "0x0000000000000000000000000000000000000000000000000000000000000000";

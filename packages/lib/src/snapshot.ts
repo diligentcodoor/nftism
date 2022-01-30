@@ -11,6 +11,7 @@ import {
 } from "./constants";
 import path from "path";
 import { AirdropType, BalanceEntry, SnapshotEntry } from "./types";
+import assert from "assert";
 
 type BalanceMap = Record<string, number>;
 
@@ -62,14 +63,16 @@ async function ngHolders(balances: BalanceMap) {
   }
 }
 
-async function muttsHolders(balances: BalanceMap) {
+async function muttsHolders(balances: BalanceMap, blockTag: number | string) {
   console.log("Gathering Mutts holders");
-  const provider = new ethers.providers.InfuraProvider();
+  const provider = new ethers.providers.JsonRpcProvider(
+    "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
+  );
   const mutts = new ethers.Contract(MUTTS_ADDRESS, MUTTS_ABI, provider);
   const totalSupply = Number(await mutts.totalSupply());
   console.log("Total Supply: ", totalSupply);
   for (let i = 0; i < totalSupply; i++) {
-    const address = await mutts.ownerOf(i);
+    const address = await mutts.ownerOf(i, { blockTag });
     if (address === NIFTY_GATEWAY_WALLET) continue;
     balances[address] = balances[address] || 0;
     balances[address] += 1;
@@ -89,12 +92,13 @@ const adjustBalances = (balances: BalanceMap): void => {
 };
 
 export const generateSnapshot = async (
-  airdropType: AirdropType
+  airdropType: AirdropType,
+  blockTag: number | string = "latest"
 ): Promise<void> => {
   const balances: BalanceMap = {};
   console.log("Generating Snapshot");
   await ngHolders(balances);
-  await muttsHolders(balances);
+  await muttsHolders(balances, blockTag);
   if (airdropType === AirdropType.Huxlxy) {
     adjustBalances(balances);
   }
@@ -106,7 +110,7 @@ export const generateSnapshot = async (
   const tokensAirdropped = snapshot.reduce((acc, curr) => acc + curr.amount, 0);
   console.log("Total Tokens being airdropped:", tokensAirdropped);
   writeFileSync(
-    path.resolve(__dirname, `${airdropType}-snapshot.json`),
+    path.resolve(__dirname, `../${airdropType}-snapshot.json`),
     JSON.stringify(snapshot, null, 2)
   );
   console.log("Snapshot generated");
@@ -116,7 +120,7 @@ export const generateBalances = (airdropType: AirdropType): void => {
   const balances: Record<string, BalanceEntry> = {};
   const snapshot: SnapshotEntry[] = JSON.parse(
     readFileSync(
-      path.resolve(__dirname, `${airdropType}-snapshot.json`)
+      path.resolve(__dirname, `../${airdropType}-snapshot.json`)
     ).toString()
   );
   for (let i = 0; i < snapshot.length; i++) {
@@ -124,8 +128,18 @@ export const generateBalances = (airdropType: AirdropType): void => {
     balances[address] = { amount, merkleIndex: i };
     console.log("Address: ", address, "Balance: ", balances[address]);
   }
+  ensureBalances(balances);
   writeFileSync(
-    path.resolve(__dirname, `${airdropType}-balances.json`),
+    path.resolve(__dirname, `../${airdropType}-balances.json`),
     JSON.stringify(balances, null, 2)
+  );
+};
+
+export const ensureBalances = (
+  balances: Record<string, BalanceEntry>
+): void => {
+  assert(
+    Object.values(balances).reduce((sum, value) => sum + value.amount, 0) ===
+      10000
   );
 };
