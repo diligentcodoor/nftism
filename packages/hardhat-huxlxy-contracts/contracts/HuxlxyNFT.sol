@@ -2,15 +2,16 @@
 pragma solidity ^0.8.10;
 
 import "erc721a/contracts/ERC721A.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "./LilOwnable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-contract HuxlxyNFT is ERC721A, Ownable {
+contract HuxlxyNFT is ERC721A, LilOwnable {
   string private baseURI;
 
   bytes32 public immutable merkleRoot;
   uint256 private immutable airdropStart;
   mapping(address => bool) private claimed;
+  address private owner;
 
   constructor(bytes32 merkleRoot_) ERC721A("Huxlxy", "HUXLXY") {
     merkleRoot = merkleRoot_;
@@ -41,16 +42,29 @@ contract HuxlxyNFT is ERC721A, Ownable {
     _safeMint(account, amount);
   }
 
-  function setBaseURI(string calldata _baseURI) external onlyOwner {
-    baseURI = _baseURI;
+  function setBaseURI(string calldata baseURI_) external {
+    if (msg.sender != _owner) revert NotOwner();
+
+    baseURI = baseURI_;
+  }
+
+  function sweep() external {
+    if (msg.sender != _owner) revert NotOwner();
+
+    require(block.timestamp > airdropStart + 30 days, "Airdrop period has not ended.");
+    _safeMint(msg.sender, 10000 - totalSupply());
   }
 
   function _baseURI() internal view override returns (string memory) {
     return baseURI;
   }
 
-  function sweep() public onlyOwner {
-    require(block.timestamp > airdropStart + 30 days, "Airdrop period has not ended.");
-    _safeMint(msg.sender, 10000 - totalSupply());
+  function supportsInterface(bytes4 interfaceId) public pure override(ERC721A, LilOwnable) returns (bool) {
+    return
+      interfaceId == type(IERC721).interfaceId ||
+      interfaceId == type(IERC721Metadata).interfaceId ||
+      interfaceId == type(IERC721Enumerable).interfaceId ||
+      interfaceId == 0x7f5828d0 || // ERC165 Interface ID for ERC173
+      super.supportsInterface(interfaceId);
   }
 }
