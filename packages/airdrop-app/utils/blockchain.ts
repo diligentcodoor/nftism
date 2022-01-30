@@ -26,7 +26,7 @@ export const networkConfig = {
   [Networks.RINKEBY]: {
     airdropContract: {
       [AirdropType.NFTism]: "0x155a2B5da8aB175662F64c8cb54e8b0b19a796E6",
-      [AirdropType.Huxlxy]: "0x0FAd84f29571AbE9A44487555011A866907c5FfD",
+      [AirdropType.Huxlxy]: "0x6872fEAba7A4B9D41279262F16Dc8958572aDF2d",
     },
     chainId: 4,
     chainName: "Rinkeby Testnet",
@@ -36,7 +36,7 @@ export const networkConfig = {
   [Networks.LOCAL]: {
     airdropContract: {
       [AirdropType.NFTism]: "0x18E317A7D70d8fBf8e6E893616b52390EbBdb629",
-      [AirdropType.Huxlxy]: "0xab16A69A5a8c12C732e0DEFF4BE56A70bb64c926",
+      [AirdropType.Huxlxy]: "0x6872fEAba7A4B9D41279262F16Dc8958572aDF2d",
     },
     chainId: 31337,
     chainName: "Local Testnet",
