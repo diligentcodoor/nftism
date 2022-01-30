@@ -13,7 +13,7 @@ function Eligibility() {
   const airdropType = useAirdrop();
   const { provider, address } = useWeb3Context();
   const [claimed, setClaimed] = useState(false);
-  const eligible = getSnapshotEntry(address).amount !== 0;
+  const eligible = getSnapshotEntry(address, airdropType).amount !== 0;
   useEffect(() => {
     if (!address) return;
     const fetchClaimed = async () => {
