@@ -29,7 +29,7 @@ contract HuxlxyNFT is ERC721A, LilOwnable {
   ) external {
     // Check merkle proof
     require(!isClaimed(account), "Airdrop already claimed.");
-    require(totalSupply() < 10000, "Mint limit reached.");
+    require(totalSupply() + amount <= 10000, "Mint limit reached.");
     bytes32 node = keccak256(abi.encodePacked(account, amount));
 
     require(
