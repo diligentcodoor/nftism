@@ -1,9 +1,15 @@
-import { Provider, chain, defaultChains } from "wagmi";
+import { Provider, chain, defaultChains, Connector } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { WalletLinkConnector } from "wagmi/connectors/walletLink";
 
-import { DEFAULT_NETWORK, INFURA_ID } from "@lib/blockchain";
+import {
+  DEFAULT_NETWORK,
+  INFURA_ID,
+  networkConfig,
+  Networks,
+} from "@lib/blockchain";
+import { providers } from "ethers";
 
 const chains = defaultChains;
 
@@ -21,11 +27,23 @@ const connectors = ({ chainId }: { chainId: number }) => {
     }),
     new WalletLinkConnector({
       options: {
-        appName: "My wagmi app",
+        appName: "NFTism",
         jsonRpcUrl: `${rpcUrl}/${INFURA_ID}`,
       },
     }),
   ];
+};
+
+type GetProviderArgs = {
+  chainId?: number;
+  connector?: Connector;
+};
+
+const provider = ({
+  chainId = DEFAULT_NETWORK,
+  connector,
+}: GetProviderArgs) => {
+  return new providers.JsonRpcProvider(networkConfig[chainId as Networks].uri);
 };
 
 type WagmiProviderProps = { children: React.ReactNode };
@@ -35,6 +53,7 @@ const WagmiProvider: React.FC<WagmiProviderProps> = ({ children }) => {
       autoConnect
       connectorStorageKey="nftism.connector"
       connectors={connectors({ chainId: DEFAULT_NETWORK })}
+      provider={provider}
     >
       {children}
     </Provider>

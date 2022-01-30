@@ -11,6 +11,7 @@ export default withIronSessionApiRoute(loginRoute, sessionOptions);
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   const { signature } = await req.body;
+  console.log(signature);
 
   try {
     const address = verifyMessage(NFTISM_LOGIN_MESSAGE, signature);
@@ -20,14 +21,17 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
       new ethers.providers.JsonRpcProvider(networkConfig[Networks.MAINNET].uri)
     ).balanceOf(address);
 
+    const tokenBalance = parseInt(formatEther(balance));
+
     const user = {
-      isLoggedIn: true,
-      tokenBalance: parseInt(formatEther(balance)),
+      isLoggedIn: tokenBalance > 100,
+      tokenBalance: tokenBalance,
     } as User;
     req.session.user = user;
     await req.session.save();
     res.json(user);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: (error as Error).message });
   }
 }

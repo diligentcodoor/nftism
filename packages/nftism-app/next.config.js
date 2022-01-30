@@ -4,4 +4,7 @@ module.exports = {
   experimental: {
     externalDir: true,
   },
-}
+  images: {
+    domains: ["www.kennyschachter.art"],
+  },
+};
