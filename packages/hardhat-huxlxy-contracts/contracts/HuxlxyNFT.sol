@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
-import "./ERC721A.sol";
+import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 contract HuxlxyNFT is ERC721A, Ownable {
-  string public baseURI;
+  string private baseURI;
 
   bytes32 public immutable merkleRoot;
   uint256 private immutable airdropStart;
   mapping(address => bool) private claimed;
 
-  constructor(bytes32 merkleRoot_) ERC721A("Huxlxy", "HUXLXY", 850) {
+  constructor(bytes32 merkleRoot_) ERC721A("Huxlxy", "HUXLXY") {
     merkleRoot = merkleRoot_;
     airdropStart = block.timestamp;
   }
@@ -41,8 +41,12 @@ contract HuxlxyNFT is ERC721A, Ownable {
     _safeMint(account, amount);
   }
 
+  function setBaseURI(string calldata _baseURI) external onlyOwner {
+    baseURI = _baseURI;
+  }
+
   function _baseURI() internal view override returns (string memory) {
-    return "ipfs://QmbtGcu8Fu7uAaG3NdiCfEGEyD7V4HRPbWstyztpU8Yshx/";
+    return baseURI;
   }
 
   function sweep() public onlyOwner {
