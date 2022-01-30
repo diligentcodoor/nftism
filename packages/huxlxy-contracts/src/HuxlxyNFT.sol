@@ -42,7 +42,7 @@ contract HuxlxyNFT is ERC721A, Ownable {
   }
 
   function _baseURI() internal view override returns (string memory) {
-    return "ipfs://Qmb6oezGxwbWZ3fpEEAL1mLgSC46NnmTKFhzaHmxBVf1Re/";
+    return "ipfs://QmbtGcu8Fu7uAaG3NdiCfEGEyD7V4HRPbWstyztpU8Yshx/";
   }
 
   function sweep() public onlyOwner {
