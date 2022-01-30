@@ -12,6 +12,7 @@ export enum Networks {
 // export const DEFAULT_NETWORK = Networks.LOCAL;
 export const DEFAULT_NETWORK = Networks.RINKEBY;
 
+export const INFURA_ID = "9aa3d95b3bc440fa88ea12eaa4456161";
 export const networkConfig = {
   [Networks.MAINNET]: {
     airdropContract: {
