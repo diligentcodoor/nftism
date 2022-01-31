@@ -9,8 +9,8 @@ export enum Networks {
 }
 
 // export const DEFAULT_NETWORK = Networks.MAINNET;
-export const DEFAULT_NETWORK = Networks.LOCAL;
-// export const DEFAULT_NETWORK = Networks.RINKEBY;
+// export const DEFAULT_NETWORK = Networks.LOCAL;
+export const DEFAULT_NETWORK = Networks.RINKEBY;
 
 export const INFURA_ID = "9aa3d95b3bc440fa88ea12eaa4456161";
 export const networkConfig = {
@@ -27,7 +27,7 @@ export const networkConfig = {
   [Networks.RINKEBY]: {
     airdropContract: {
       [AirdropType.NFTism]: "0x155a2B5da8aB175662F64c8cb54e8b0b19a796E6",
-      [AirdropType.Huxlxy]: "0xEbbE5616a7277Aa61E7a6840890485018B9d043A",
+      [AirdropType.Huxlxy]: "0x4a5ca5637cD543C81452fFB79FB6F2F868c7108b",
     },
     chainId: 4,
     chainName: "Rinkeby Testnet",
