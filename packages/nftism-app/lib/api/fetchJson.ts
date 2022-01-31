@@ -1,3 +1,14 @@
+export async function fetchQL<JSON = unknown>(
+  query: string,
+  { variables }: { variables?: any } = {}
+): Promise<JSON> {
+  return fetchJson("https://www.kennyschachter.art/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, variables }),
+  });
+}
+
 export default async function fetchJson<JSON = unknown>(
   input: RequestInfo,
   init?: RequestInit

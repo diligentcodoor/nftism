@@ -1,4 +1,4 @@
-import fetchJson from "./fetchJson";
+import { fetchQL } from "./fetchJson";
 
 export type BlogPost = {
   slug: string;
@@ -6,33 +6,47 @@ export type BlogPost = {
   media: string;
   date: string;
   excerpt: string;
-  content: string;
 };
 
 export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
-  const posts: any[] = await fetchJson(
-    "https://www.kennyschachter.art/wp-json/wp/v2/posts?per_page=1",
-    {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
+  const {
+    data: {
+      posts: { nodes: posts },
+    },
+  } = (await fetchQL(
+    `
+    query AllPosts {
+      posts (first: 20, where: { orderby: { field: DATE, order: DESC }, categoryNotIn: "345"}) {
+        nodes {
+          excerpt
+          date
+          title
+          slug
+          featuredImage {
+            node {
+              mediaItemUrl
+            }
+          }
+        }
+      }
     }
-  );
-  console.log(typeof posts[0].content.rendered);
+    `
+  )) as { data: { posts: { nodes: any[] } } };
   return posts.map(
     ({
       slug,
       title,
-      jetpack_featured_media_url: media,
+      featuredImage: {
+        node: { mediaItemUrl: media },
+      },
       date,
       excerpt,
-      content,
     }) => ({
       slug,
-      title: title.rendered,
+      title,
+      date,
+      excerpt,
       media,
-      date: date,
-      excerpt: excerpt.rendered,
-      content: content.rendered,
     })
   );
 };

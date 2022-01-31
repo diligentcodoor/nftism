@@ -9,7 +9,6 @@ import {
   Heading,
   Text,
   Stack,
-  Avatar,
   useColorModeValue,
   Flex,
   useBreakpointValue,
@@ -24,13 +23,7 @@ type BlogProps = {
   posts: BlogPost[];
 };
 
-const BlogCard: React.FC<BlogPost> = ({
-  title,
-  media,
-  date,
-  excerpt,
-  content,
-}) => {
+const BlogCard: React.FC<BlogPost> = ({ title, media, date, excerpt }) => {
   const humanDate = useMemo(() => {
     const dateOptions = { year: "numeric", month: "long", day: "numeric" } as {
       year: "numeric";
@@ -40,7 +33,8 @@ const BlogCard: React.FC<BlogPost> = ({
     return new Date(date).toLocaleDateString(undefined, dateOptions);
   }, [date]);
 
-  console.log(content);
+  console.log(media);
+
   return (
     <Center py={6}>
       <Box
@@ -66,8 +60,9 @@ const BlogCard: React.FC<BlogPost> = ({
           >
             {title}
           </Heading>
-          {parse(excerpt)}
-          {parse(content)}
+          {parse(
+            excerpt.replace(/\[.*?\]/g, "").replace("</p>", "[&hellip;]</p>")
+          )}
         </Stack>
         <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
           <Stack direction={"column"} spacing={0} fontSize={"sm"}>
@@ -106,7 +101,7 @@ const Blog: NextPage<BlogProps> = ({ posts }) => {
 
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
   async ({ req, res }) => {
-    if (!!req.session.user?.isLoggedIn) {
+    if (!req.session.user?.isLoggedIn) {
       return { notFound: true };
     }
 
