@@ -15,7 +15,8 @@ export default function useLogin() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (user?.isLoggedIn) return;
+    if (!user) return;
+    if (user.isLoggedIn) return;
 
     const login = async () => {
       try {

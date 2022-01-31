@@ -17,21 +17,19 @@ const ConnectorButtons: React.FC = () => {
   return (
     <Flex spacing="1em" direction="column">
       {data.connectors.map((connector) => (
-        <>
-          <Button
-            disabled={!connector.ready}
-            key={connector.id}
-            variant={"outline"}
-            colorScheme={"blackAlpha"}
-            size="md"
-            my="0.15em"
-            border="none"
-            onClick={() => connect(connector)}
-          >
-            {connector.name}
-            {!connector.ready && " (unsupported)"}
-          </Button>
-        </>
+        <Button
+          disabled={!connector.ready}
+          key={connector.id}
+          variant={"outline"}
+          colorScheme={"blackAlpha"}
+          size="md"
+          my="0.15em"
+          border="none"
+          onClick={() => connect(connector)}
+        >
+          {connector.name}
+          {!connector.ready && " (unsupported)"}
+        </Button>
       ))}
 
       {error && <div>{error?.message ?? "Failed to connect"}</div>}

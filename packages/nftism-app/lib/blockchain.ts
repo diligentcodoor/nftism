@@ -8,8 +8,8 @@ export const ERC20_ABI = [
   "function balanceOf(address) public view returns (uint256)",
 ];
 
-// export const DEFAULT_NETWORK = Networks.MAINNET;
-export const DEFAULT_NETWORK = Networks.LOCAL;
+export const DEFAULT_NETWORK = Networks.MAINNET;
+// export const DEFAULT_NETWORK = Networks.LOCAL;
 // export const DEFAULT_NETWORK = Networks.RINKEBY;
 
 export const INFURA_ID = "9aa3d95b3bc440fa88ea12eaa4456161";

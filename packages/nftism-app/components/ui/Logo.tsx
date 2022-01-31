@@ -7,12 +7,14 @@ export default function Logo(props: any) {
   return (
     <Box cursor="pointer">
       <Link href="/" passHref>
-        <Image
-          width={100}
-          height={33}
-          src="/nftism-logo.png"
-          alt="NFTism Logo"
-        />
+        <a>
+          <Image
+            width={100}
+            height={33}
+            src="/nftism-logo.png"
+            alt="NFTism Logo"
+          />
+        </a>
       </Link>
     </Box>
   );

@@ -11,7 +11,13 @@ export default withIronSessionApiRoute(loginRoute, sessionOptions);
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
   const { signature } = await req.body;
-  console.log(signature);
+
+  if (!signature) {
+    res.status(401).json({
+      message: "Please connect your wallet to access NFTism",
+    });
+    return;
+  }
 
   try {
     const address = verifyMessage(NFTISM_LOGIN_MESSAGE, signature);
@@ -22,6 +28,13 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
     ).balanceOf(address);
 
     const tokenBalance = parseInt(formatEther(balance));
+    if (tokenBalance < 100) {
+      res.status(403).json({
+        message:
+          "Please acquire at least 100 NFTism tokens to access the community.",
+      });
+      return;
+    }
 
     const user = {
       isLoggedIn: tokenBalance > 100,

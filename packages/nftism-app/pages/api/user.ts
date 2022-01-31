@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 export default withIronSessionApiRoute(userRoute, sessionOptions);
 
 async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
-  if (req.session.user) {
+  if (req.session.user && req.session.user.tokenBalance >= 100) {
     res.json({
       ...req.session.user,
       isLoggedIn: true,
