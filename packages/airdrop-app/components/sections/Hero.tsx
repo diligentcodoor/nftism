@@ -1,17 +1,8 @@
-import Link from "next/link";
-import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  Heading,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Image, Heading, Spinner } from "@chakra-ui/react";
 import ConnectButton from "../ui/ConnectButton";
-import { useWeb3Context } from "../../hooks/web3-context";
 import Eligibility from "../ui/Eligibility";
-
+import { useConnect } from "wagmi";
+import { useSwitchNetwork } from "../../hooks/useSwitchNetwork";
 interface HeroProps {
   title?: string;
   subtitle: string;
@@ -29,7 +20,9 @@ const Hero: React.FC<HeroProps> = ({
   ctaText = "",
   ctaLink = "",
 }) => {
-  const { connected } = useWeb3Context();
+  const [{ data: connectionData }] = useConnect();
+  const { shouldSwitch } = useSwitchNetwork();
+
   return (
     <Flex
       align="center"
@@ -49,7 +42,12 @@ const Hero: React.FC<HeroProps> = ({
         {gif && <Image rounded="lg" src={gif} alt="Huxlxy" size="100%" />}
       </Box>
 
-      {connected ? <Eligibility /> : <ConnectButton />}
+      {!connectionData.connected && <ConnectButton />}
+      {shouldSwitch ? (
+        <Spinner size="lg" />
+      ) : (
+        connectionData.connected && <Eligibility />
+      )}
     </Flex>
   );
 };

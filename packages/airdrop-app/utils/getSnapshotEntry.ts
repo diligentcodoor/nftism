@@ -9,5 +9,6 @@ export const getSnapshotEntry = (
   const entries = (
     airdropType === AirdropType.NFTism ? nftismBalances : huxlxyBalances
   ) as Record<string, BalanceEntry>;
+  console.log(entries[address]);
   return entries[address] || { amount: 0, merkleIndex: -1 };
 };

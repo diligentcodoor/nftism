@@ -9,8 +9,8 @@ export enum Networks {
 }
 
 // export const DEFAULT_NETWORK = Networks.MAINNET;
-// export const DEFAULT_NETWORK = Networks.LOCAL;
-export const DEFAULT_NETWORK = Networks.RINKEBY;
+export const DEFAULT_NETWORK = Networks.LOCAL;
+// export const DEFAULT_NETWORK = Networks.RINKEBY;
 
 export const INFURA_ID = "9aa3d95b3bc440fa88ea12eaa4456161";
 export const networkConfig = {
@@ -36,8 +36,8 @@ export const networkConfig = {
   },
   [Networks.LOCAL]: {
     airdropContract: {
-      [AirdropType.NFTism]: "0x18E317A7D70d8fBf8e6E893616b52390EbBdb629",
-      [AirdropType.Huxlxy]: "0xEbbE5616a7277Aa61E7a6840890485018B9d043A",
+      [AirdropType.NFTism]: "0x6F6f570F45833E249e27022648a26F4076F48f78",
+      [AirdropType.Huxlxy]: "0x40918Ba7f132E0aCba2CE4de4c4baF9BD2D7D849",
     },
     chainId: 31337,
     chainName: "Local Testnet",

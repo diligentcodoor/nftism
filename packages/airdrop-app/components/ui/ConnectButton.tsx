@@ -1,48 +1,99 @@
-import { useEffect, useState } from "react";
-import { useWeb3Context } from "../../hooks/web3-context";
-import { DEFAULT_NETWORK } from "../../utils/blockchain";
-import HeaderButton from "./HeaderButton";
+import {
+  Button,
+  Flex,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useAccount, useConnect } from "wagmi";
 
-function ConnectButton() {
-  const {
-    connect,
+const ConnectorButtons: React.FC = () => {
+  const [{ data, error }, connect] = useConnect();
+  return (
+    <Flex spacing="1em" direction="column">
+      {data.connectors.map((connector) => (
+        <Button
+          disabled={!connector.ready}
+          key={connector.id}
+          variant={"outline"}
+          colorScheme={"blackAlpha"}
+          size="md"
+          my="0.15em"
+          border="none"
+          onClick={() => connect(connector)}
+        >
+          {connector.name}
+          {!connector.ready && " (unsupported)"}
+        </Button>
+      ))}
+
+      {error && <div>{error?.message ?? "Failed to connect"}</div>}
+    </Flex>
+  );
+};
+
+const ConnectButton: React.FC = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [{ data: connectData, error: connectError, loading: connectLoading }] =
+    useConnect();
+  const [
+    { data: accountData, error: accountError, loading: accountLoading },
     disconnect,
-    connected,
-    web3,
-    providerChainID,
-    checkWrongNetwork,
-  } = useWeb3Context();
-  const [isConnected, setConnected] = useState(connected);
+  ] = useAccount();
 
-  let pendingTransactions: any[] = [];
-
-  let buttonText = "Connect";
-  let clickFunc: any = connect;
-  let buttonStyle = {};
-
-  if (isConnected) {
-    buttonText = "Disconnect";
-    clickFunc = disconnect;
-  }
-
-  if (pendingTransactions && pendingTransactions.length > 0) {
-    buttonText = `${pendingTransactions.length} Pending `;
-    clickFunc = () => {};
-  }
-
-  if (isConnected && providerChainID !== DEFAULT_NETWORK) {
-    buttonText = "Switch network";
-    buttonStyle = { backgroundColor: "rgb(255, 67, 67)" };
-    clickFunc = () => {
-      checkWrongNetwork();
-    };
-  }
-
-  useEffect(() => {
-    setConnected(connected);
-  }, [web3, connected]);
-
-  return <HeaderButton onClick={clickFunc}>{buttonText}</HeaderButton>;
-}
+  return (
+    <>
+      <Button
+        variant={"outline"}
+        color="white"
+        _hover={{
+          bg: "white",
+          color: "teal.500",
+        }}
+        size="md"
+        mr={4}
+        isLoading={connectLoading || accountLoading}
+        onClick={
+          connectData.connected
+            ? () => {
+                disconnect();
+                onClose();
+              }
+            : onOpen
+        }
+      >
+        {connectData.connected ? "Disconnect" : "Connect"}
+      </Button>
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen && !connectData.connected}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Connect Your Wallet</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <ConnectorButtons />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              variant={"ghost"}
+              colorScheme={"blackAlpha"}
+              onClick={onClose}
+            >
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
 
 export default ConnectButton;
