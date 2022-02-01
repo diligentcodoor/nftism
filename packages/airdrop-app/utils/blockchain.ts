@@ -8,16 +8,16 @@ export enum Networks {
   LOCAL = 31337,
 }
 
-// export const DEFAULT_NETWORK = Networks.MAINNET;
+export const DEFAULT_NETWORK = Networks.MAINNET;
 // export const DEFAULT_NETWORK = Networks.LOCAL;
-export const DEFAULT_NETWORK = Networks.RINKEBY;
+// export const DEFAULT_NETWORK = Networks.RINKEBY;
 
 export const INFURA_ID = "9aa3d95b3bc440fa88ea12eaa4456161";
 export const networkConfig = {
   [Networks.MAINNET]: {
     airdropContract: {
       [AirdropType.NFTism]: "0x11ae08fC5124b244451884926baFe857316f7ccc",
-      [AirdropType.Huxlxy]: "",
+      [AirdropType.Huxlxy]: "0xcD2D0AA981ED12bFE700693F701eAC8B60EE68ee",
     },
     chainId: 1,
     chainName: "Ethereum Mainnet",

@@ -27,10 +27,9 @@ const ClaimButton: React.FC = () => {
         isLoading={loading}
         loadingText="Pending"
         onClick={claim}
-        isDisabled={true || !!tx}
+        isDisabled={!!tx}
       >
-        Claim @ 5:30 pm UTC
-        {/* {tx ? "Claimed" : "Claim"} */}
+        {tx ? "Claimed" : "Claim"}
       </HeaderButton>
       {tx?.hash && (
         <Link
