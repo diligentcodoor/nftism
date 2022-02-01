@@ -5,7 +5,8 @@ export type BlogPost = {
   title: string;
   media: string;
   date: string;
-  excerpt: string;
+  excerpt?: string;
+  content?: string;
 };
 
 export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
@@ -49,4 +50,40 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
       media,
     })
   );
+};
+
+export const fetchBlogPost = async (
+  slug: string
+): Promise<BlogPost | undefined> => {
+  const {
+    data: { post: post },
+  } = (await fetchQL(
+    `
+    query Post($id: ID!) {
+      post(id: $id, idType: SLUG) {
+        date
+        content
+        title
+        featuredImage {
+          node {
+            mediaItemUrl
+          }
+        }
+      }
+    }
+    `,
+    { variables: { id: slug } }
+  )) as { data: { post: any } };
+
+  const {
+    date,
+    content,
+    title,
+    featuredImage: {
+      node: { mediaItemUrl: media },
+    },
+  } = post;
+
+  if (!post) return undefined;
+  return { date, content, title, media, slug } as BlogPost;
 };
