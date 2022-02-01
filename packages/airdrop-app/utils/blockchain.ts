@@ -27,7 +27,7 @@ export const networkConfig = {
   [Networks.RINKEBY]: {
     airdropContract: {
       [AirdropType.NFTism]: "0x155a2B5da8aB175662F64c8cb54e8b0b19a796E6",
-      [AirdropType.Huxlxy]: "0x4a5ca5637cD543C81452fFB79FB6F2F868c7108b",
+      [AirdropType.Huxlxy]: "0x7A4CCD541d66f2E1b33B993E2b7bC291281FEF52",
     },
     chainId: 4,
     chainName: "Rinkeby Testnet",
