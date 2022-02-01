@@ -1,6 +1,5 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
-import parse from "html-react-parser";
 
 import { withIronSessionSsr } from "iron-session/next";
 import {
@@ -18,60 +17,59 @@ import LandingLayout from "@components/layouts/LandingLayout";
 import { BlogPost, fetchBlogPosts } from "@lib/api/fetchBlog";
 import { sessionOptions } from "@lib/session";
 import { useMemo } from "react";
+import { humanReadableDate, parseDiviContent } from "@lib/utils";
+import Link from "next/link";
 
 type BlogProps = {
   posts: BlogPost[];
 };
 
-const BlogCard: React.FC<BlogPost> = ({ title, media, date, excerpt }) => {
-  const humanDate = useMemo(() => {
-    const dateOptions = { year: "numeric", month: "long", day: "numeric" } as {
-      year: "numeric";
-      month: "long";
-      day: "numeric";
-    };
-    return new Date(date).toLocaleDateString(undefined, dateOptions);
-  }, [date]);
-
-  console.log(media);
+const BlogCard: React.FC<BlogPost> = ({
+  title,
+  media,
+  date,
+  excerpt,
+  slug,
+}) => {
+  const humanDate = useMemo(() => humanReadableDate(date), [date]);
 
   return (
-    <Center py={6}>
-      <Box
-        maxW={"345px"}
-        w={"full"}
-        bg={useColorModeValue("white", "gray.900")}
-        p={3}
-        overflow={"hidden"}
-      >
-        <Box h={"210px"} bg={"gray.100"} mb={6} pos={"relative"}>
-          <Image
-            src={media}
-            layout="fill"
-            objectFit="cover"
-            alt={`Thumbnail Image for "${title}"`}
-          />
-        </Box>
-        <Stack>
-          <Heading
-            color={useColorModeValue("gray.700", "white")}
-            fontSize={"2xl"}
-            fontFamily={"body"}
-          >
-            {title}
-          </Heading>
-          {parse(
-            excerpt.replace(/\[.*?\]/g, "").replace("</p>", "[&hellip;]</p>")
-          )}
-        </Stack>
-        <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
-          <Stack direction={"column"} spacing={0} fontSize={"sm"}>
-            <Text fontWeight={600}>Kenny Schachter</Text>
-            <Text color={"gray.500"}>{humanDate}</Text>
+    <Link href={`/blog/${slug}`} passHref>
+      <Center py={6}>
+        <Box
+          maxW={"345px"}
+          w={"full"}
+          bg={useColorModeValue("white", "gray.900")}
+          p={3}
+          overflow={"hidden"}
+        >
+          <Box h={"210px"} bg={"gray.100"} mb={6} pos={"relative"}>
+            <Image
+              src={media}
+              layout="fill"
+              objectFit="cover"
+              alt={`Thumbnail Image for "${title}"`}
+            />
+          </Box>
+          <Stack>
+            <Heading
+              color={useColorModeValue("gray.700", "white")}
+              fontSize={"2xl"}
+              fontFamily={"body"}
+            >
+              {title}
+            </Heading>
+            {parseDiviContent(excerpt!, true)}
           </Stack>
-        </Stack>
-      </Box>
-    </Center>
+          <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
+            <Stack direction={"column"} spacing={0} fontSize={"sm"}>
+              <Text fontWeight={600}>Kenny Schachter</Text>
+              <Text color={"gray.500"}>{humanDate}</Text>
+            </Stack>
+          </Stack>
+        </Box>
+      </Center>
+    </Link>
   );
 };
 
