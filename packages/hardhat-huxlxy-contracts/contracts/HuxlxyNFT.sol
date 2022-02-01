@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
-import "./ERC721A.sol";
+import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 contract HuxlxyNFT is ERC721A, Ownable {
-  string public baseURI;
+  string private baseURI;
 
   bytes32 public immutable merkleRoot;
   uint256 private immutable airdropStart;
   mapping(address => bool) private claimed;
 
-  constructor(bytes32 merkleRoot_) ERC721A("Huxlxy", "HUXLXY", 850) {
+  constructor(bytes32 merkleRoot_) ERC721A("Huxlxy", "HUXLXY") {
     merkleRoot = merkleRoot_;
     airdropStart = block.timestamp;
   }
@@ -26,9 +26,8 @@ contract HuxlxyNFT is ERC721A, Ownable {
     uint256 amount,
     bytes32[] calldata merkleProof
   ) external {
-    // Check merkle proof
     require(!isClaimed(account), "Airdrop already claimed.");
-    require(totalSupply() < 10000, "Mint limit reached.");
+    require(totalSupply() + amount <= 10000, "Mint limit reached.");
     bytes32 node = keccak256(abi.encodePacked(account, amount));
 
     require(
@@ -41,12 +40,16 @@ contract HuxlxyNFT is ERC721A, Ownable {
     _safeMint(account, amount);
   }
 
-  function _baseURI() internal view override returns (string memory) {
-    return "ipfs://QmWRWebqaK1seByLgKUHQHPtws1NtmBoxgxsvGjQLjZU4R/";
+  function setBaseURI(string calldata baseURI_) external onlyOwner {
+    baseURI = baseURI_;
   }
 
-  function sweep() public onlyOwner {
+  function sweep() external onlyOwner {
     require(block.timestamp > airdropStart + 30 days, "Airdrop period has not ended.");
     _safeMint(msg.sender, 10000 - totalSupply());
+  }
+
+  function _baseURI() internal view override returns (string memory) {
+    return baseURI;
   }
 }

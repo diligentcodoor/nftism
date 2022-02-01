@@ -1,7 +1,14 @@
-import _balances from "../../lib/nftism-balances.json";
-import { BalanceEntry } from "../../lib/src/types";
+import nftismBalances from "../../lib/nftism-balances.json";
+import huxlxyBalances from "../../lib/huxlxy-balances.json";
+import { AirdropType, BalanceEntry } from "../../lib/src/types";
 
-export const getSnapshotEntry = (address: string): BalanceEntry => {
-  const entries = _balances as Record<string, BalanceEntry>;
+export const getSnapshotEntry = (
+  address: string,
+  airdropType: AirdropType
+): BalanceEntry => {
+  const entries = (
+    airdropType === AirdropType.NFTism ? nftismBalances : huxlxyBalances
+  ) as Record<string, BalanceEntry>;
+  console.log(entries[address]);
   return entries[address] || { amount: 0, merkleIndex: -1 };
 };
