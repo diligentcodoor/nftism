@@ -1,5 +1,7 @@
+import { useMemo } from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 import { withIronSessionSsr } from "iron-session/next";
 import {
@@ -16,23 +18,13 @@ import {
 import LandingLayout from "@components/layouts/LandingLayout";
 import { BlogPost, fetchBlogPosts } from "@lib/api/fetchBlog";
 import { sessionOptions } from "@lib/session";
-import { useMemo } from "react";
-import Link from "next/link";
-
-import { parseDiviExcerpt } from "@lib/diviParser";
 import { humanReadableDate } from "@lib/utils";
 
 type BlogProps = {
   posts: BlogPost[];
 };
 
-const BlogCard: React.FC<BlogPost> = ({
-  title,
-  media,
-  date,
-  excerpt,
-  slug,
-}) => {
+const BlogCard: React.FC<BlogPost> = ({ title, media, date, slug }) => {
   const humanDate = useMemo(() => humanReadableDate(date), [date]);
 
   return (

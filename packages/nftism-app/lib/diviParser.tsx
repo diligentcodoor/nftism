@@ -21,15 +21,6 @@ type TagNode = {
   children: Array<TextNode | TagNode>;
 };
 
-export function parseDiviExcerpt(
-  content: string
-): string | JSX.Element | JSX.Element[] {
-  return parse(
-    // Remove shortcodes and add ellipsis
-    content.replace(/\[.*?\]/g, "").replace("</p>", "[&hellip;]</p>")
-  );
-}
-
 export function parseDiviContent(
   content: string
 ): string | JSX.Element | JSX.Element[] {

@@ -5,7 +5,6 @@ export type BlogPost = {
   title: string;
   media: string;
   date: string;
-  excerpt?: string;
   content?: string;
 };
 
@@ -19,7 +18,6 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
     query AllPosts {
       posts (first: 20, where: { orderby: { field: DATE, order: DESC }, categoryNotIn: "345", categoryIn: "340"}) {
         nodes {
-          excerpt
           date
           title
           slug
@@ -41,12 +39,10 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
         node: { mediaItemUrl: media },
       },
       date,
-      excerpt,
     }) => ({
       slug,
       title,
       date,
-      excerpt,
       media,
     })
   );
