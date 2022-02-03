@@ -17,7 +17,7 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
   } = (await fetchQL(
     `
     query AllPosts {
-      posts (first: 20, where: { orderby: { field: DATE, order: DESC }, categoryNotIn: "345"}) {
+      posts (first: 20, where: { orderby: { field: DATE, order: DESC }, categoryNotIn: "345", categoryIn: "340"}) {
         nodes {
           excerpt
           date
@@ -75,6 +75,8 @@ export const fetchBlogPost = async (
     { variables: { id: slug } }
   )) as { data: { post: any } };
 
+  if (!post) return undefined;
+
   const {
     date,
     content,
@@ -84,6 +86,5 @@ export const fetchBlogPost = async (
     },
   } = post;
 
-  if (!post) return undefined;
   return { date, content, title, media, slug } as BlogPost;
 };

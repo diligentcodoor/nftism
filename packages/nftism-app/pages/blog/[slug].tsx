@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import type { GetServerSideProps, NextPage } from "next";
-import Image from "next/image";
 import { withIronSessionSsr } from "iron-session/next";
 import {
   Box,
@@ -16,8 +15,9 @@ import {
 import LandingLayout from "@components/layouts/LandingLayout";
 import { BlogPost, fetchBlogPost } from "@lib/api/fetchBlog";
 import { sessionOptions } from "@lib/session";
-import { humanReadableDate, parseDiviContent } from "@lib/utils";
-
+import { humanReadableDate } from "@lib/utils";
+import { parseDiviContent } from "@lib/diviParser";
+import BlogImage from "@components/ui/BlogImage";
 type BlogProps = {
   post: BlogPost;
 };
@@ -30,20 +30,31 @@ const BlogPage: NextPage<BlogProps> = ({ post }) => {
         direction="column"
         width={{ base: "90%", sm: "80%", md: "70%", lg: "50%" }}
       >
-        {/* <Image src={post.media} alt={post.title} height="fill" /> */}
-        <Heading>{post.title}</Heading>
-        <Text>{humanDate}</Text>
-        {parseDiviContent(post.content!)}
+        <Heading
+          fontWeight="normal"
+          color="#333"
+          textAlign="left"
+          as="h1"
+          size="lg"
+        >
+          {post.title}
+        </Heading>
+        <Text fontSize="sm" py="3px" color="red.300" align="left">
+          {humanDate}
+        </Text>
+        <BlogImage src={post.media} alt={post.title} />
+        <Flex direction="column">{parseDiviContent(post.content!)}</Flex>
       </Flex>
     </LandingLayout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
-  async ({ req, params }) => {
+  async ({ req, res, params }) => {
     if (!req.session.user?.isLoggedIn) {
       return { notFound: true };
     }
+    res.setHeader("Cache-Control", `s-maxage=3600, stale-while-revalidate`);
     const slug = params!.slug as string;
 
     const post = await fetchBlogPost(slug);

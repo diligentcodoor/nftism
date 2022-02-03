@@ -17,8 +17,10 @@ import LandingLayout from "@components/layouts/LandingLayout";
 import { BlogPost, fetchBlogPosts } from "@lib/api/fetchBlog";
 import { sessionOptions } from "@lib/session";
 import { useMemo } from "react";
-import { humanReadableDate, parseDiviContent } from "@lib/utils";
 import Link from "next/link";
+
+import { parseDiviExcerpt } from "@lib/diviParser";
+import { humanReadableDate } from "@lib/utils";
 
 type BlogProps = {
   posts: BlogPost[];
@@ -42,6 +44,13 @@ const BlogCard: React.FC<BlogPost> = ({
           bg={useColorModeValue("white", "gray.900")}
           p={3}
           overflow={"hidden"}
+          border="1px solid white"
+          _hover={{
+            cursor: "pointer",
+            boxShadow: "inset 0px 0px 5px #c1c1c1",
+            border: "1px solid",
+            borderColor: "red.300",
+          }}
         >
           <Box h={"210px"} bg={"gray.100"} mb={6} pos={"relative"}>
             <Image
@@ -53,13 +62,14 @@ const BlogCard: React.FC<BlogPost> = ({
           </Box>
           <Stack>
             <Heading
-              color={useColorModeValue("gray.700", "white")}
-              fontSize={"2xl"}
-              fontFamily={"body"}
+              fontWeight="light"
+              color="#333"
+              textAlign="left"
+              as="h1"
+              size="lg"
             >
               {title}
             </Heading>
-            {parseDiviContent(excerpt!, true)}
           </Stack>
           <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
             <Stack direction={"column"} spacing={0} fontSize={"sm"}>
@@ -102,6 +112,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
     if (!req.session.user?.isLoggedIn) {
       return { notFound: true };
     }
+    res.setHeader("Cache-Control", `s-maxage=3600, stale-while-revalidate`);
 
     const posts = await fetchBlogPosts();
     return { props: { posts } };
