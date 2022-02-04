@@ -54,7 +54,11 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
     if (!req.session.user?.isLoggedIn) {
       return { notFound: true };
     }
-    res.setHeader("Cache-Control", `s-maxage=3600, stale-while-revalidate`);
+
+    res.setHeader(
+      "Cache-Control",
+      "public, s-maxage=3600, stale-while-revalidate"
+    );
     const slug = params!.slug as string;
 
     const post = await fetchBlogPost(slug);
