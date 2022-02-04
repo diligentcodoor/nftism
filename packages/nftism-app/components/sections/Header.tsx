@@ -1,9 +1,10 @@
 import { ReactNode } from "react";
+import NextLink from "next/link";
 import {
   Box,
   Flex,
   HStack,
-  Link,
+  Link as ChakraLink,
   IconButton,
   Button,
   useDisclosure,
@@ -24,15 +25,35 @@ const Links: NamedLink[] = [
     name: "Blog",
     href: "/blog",
   },
+  {
+    name: "Price Chart",
+    href: "https://www.dextools.io/app/ether/pair-explorer/0x265e4776011d61b52e9ab37827590ab7efbdae89",
+  },
+  {
+    name: "Buy $NFTism",
+    href: "https://app.sushi.com/swap?outputCurrency=0xf8fe4dbe106ac2a1e6c96c3ca77b344a1b1a49e1",
+  },
 ];
 
-const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
-  <Link px={2} py={1} href={href}>
-    <Button color="black" variant="link">
-      {children}
-    </Button>
-  </Link>
-);
+const NavLink = ({ href, children }: { href: string; children: ReactNode }) => {
+  try {
+    new URL(href);
+    return (
+      <ChakraLink href={href} isExternal>
+        <Button color="black" variant="link">
+          {children}
+        </Button>
+      </ChakraLink>
+    );
+  } catch (e) {}
+  return (
+    <NextLink href={href} passHref>
+      <Button color="black" variant="link">
+        {children}
+      </Button>
+    </NextLink>
+  );
+};
 
 const Header: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
