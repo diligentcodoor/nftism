@@ -9,8 +9,32 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+import FeaturedCard, {
+  Props as FeaturedCardProps,
+} from "@components/ui/FeaturedCard";
+
+const featured: FeaturedCardProps[] = [
+  {
+    artist: "Kenny Schachter",
+    title: "CryptoMutts",
+    imgSrc: "/cryptomutts-logo.jpg",
+    href: "https://opensea.io/collection/cryptomutts-official",
+  },
+  {
+    artist: "Huxlxy",
+    title: "HuxlxyNFT",
+    imgSrc: "/huxlxy-logo.jpg",
+    href: "https://opensea.io/collection/huxlxy-nft",
+  },
+  {
+    artist: "Kenny Schachter",
+    title: "Bespoke Kenny",
+    imgSrc: "/kenny-logo.png",
+    href: "https://opensea.io/collection/kenny-schachter",
+  },
+];
+
 interface HeroProps {
-  title: string;
   subtitle: string;
   image: string;
   ctaText: string;
@@ -18,7 +42,6 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({
-  title = "",
   subtitle = "",
   image = "",
   ctaText = "",
@@ -37,15 +60,6 @@ const Hero: React.FC<HeroProps> = ({
         <Image src={image} alt="NFTism" size="100%" rounded="full" />
       </Box>
       <Stack spacing={4} w={{ base: "80%", md: "40%" }} align={["center"]}>
-        {/* <Heading
-          as="h1"
-          size="xl"
-          fontWeight="bold"
-          color="gray.700"
-          textAlign={["center"]}
-        >
-          {title}
-        </Heading> */}
         <Heading
           as="h2"
           size="md"
@@ -77,6 +91,11 @@ const Hero: React.FC<HeroProps> = ({
         >
           Beware of Metadada.
         </Text>
+      </Stack>
+      <Stack direction={{ base: "column", md: "row" }}>
+        {featured.map((item) => (
+          <FeaturedCard key={item.title} {...item} />
+        ))}
       </Stack>
     </Flex>
   );
