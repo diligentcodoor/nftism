@@ -58,7 +58,7 @@ const BlogCard: React.FC<BlogPost> = ({ title, media, date, slug }) => {
               color="#333"
               textAlign="left"
               as="h1"
-              size="lg"
+              size="md"
             >
               {title}
             </Heading>
@@ -66,7 +66,7 @@ const BlogCard: React.FC<BlogPost> = ({ title, media, date, slug }) => {
           <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
             <Stack direction={"column"} spacing={0} fontSize={"sm"}>
               <Text fontWeight={600}>Kenny Schachter</Text>
-              <Text color={"gray.500"}>{humanDate}</Text>
+              <Text color={"red.300"}>{humanDate}</Text>
             </Stack>
           </Stack>
         </Box>

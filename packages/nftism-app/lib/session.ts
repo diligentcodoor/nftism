@@ -9,6 +9,7 @@ export const sessionOptions: IronSessionOptions = {
   password: process.env.SECRET_COOKIE_PASSWORD as string,
   cookieName: "nftism-session",
   cookieOptions: {
+    maxAge: 3600,
     secure: process.env.NODE_ENV === "production",
   },
 };
