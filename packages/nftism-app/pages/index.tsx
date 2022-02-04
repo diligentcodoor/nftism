@@ -7,7 +7,6 @@ const Home: NextPage = () => {
   return (
     <LandingLayout>
       <Hero
-        title="Welcome to NFTism"
         subtitle=""
         image="/nftism-token.jpg"
         ctaText="Enter NFTism"
