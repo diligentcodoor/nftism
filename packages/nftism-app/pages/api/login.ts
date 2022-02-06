@@ -1,50 +1,53 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withIronSessionApiRoute } from "iron-session/next";
+import { SiweMessage } from "siwe";
 import { ethers } from "ethers";
-import { formatEther, verifyMessage } from "ethers/lib/utils";
+import { formatEther } from "ethers/lib/utils";
 
 import { sessionOptions, User } from "@lib/session";
 import { ERC20_ABI, networkConfig, Networks } from "@lib/blockchain";
-import { NFTISM_LOGIN_MESSAGE } from "@lib/constants";
+import { NFTISM_TOKEN_THRESHOLD } from "@lib/constants";
 
 export default withIronSessionApiRoute(loginRoute, sessionOptions);
 
 async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
-  const { signature } = await req.body;
+  const { method } = req;
+  switch (method) {
+    case "POST":
+      try {
+        const { message, signature } = req.body;
 
-  if (!signature) {
-    res.status(401).json({
-      message: "Please connect your wallet to access NFTism",
-    });
-    return;
-  }
+        const siweMessage = new SiweMessage(message);
+        const fields = await siweMessage.validate(signature);
+        const balance = await new ethers.Contract(
+          networkConfig[Networks.MAINNET].nftismContract,
+          ERC20_ABI,
+          new ethers.providers.JsonRpcProvider(
+            networkConfig[Networks.MAINNET].uri
+          )
+        ).balanceOf(fields.address);
+        const tokenBalance = parseInt(formatEther(balance));
 
-  try {
-    const address = verifyMessage(NFTISM_LOGIN_MESSAGE, signature);
-    const balance = await new ethers.Contract(
-      networkConfig[Networks.MAINNET].nftismContract,
-      ERC20_ABI,
-      new ethers.providers.JsonRpcProvider(networkConfig[Networks.MAINNET].uri)
-    ).balanceOf(address);
-
-    const tokenBalance = parseInt(formatEther(balance));
-    if (tokenBalance < 100) {
-      res.status(403).json({
-        message:
-          "Please acquire at least 100 NFTism tokens to access the community.",
-      });
-      return;
-    }
-
-    const user = {
-      isLoggedIn: tokenBalance > 100,
-      tokenBalance: tokenBalance,
-    } as User;
-    req.session.user = user;
-    await req.session.save();
-    res.json(user);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: (error as Error).message });
+        if (tokenBalance < NFTISM_TOKEN_THRESHOLD) {
+          res.status(403).json({
+            message:
+              "Please acquire at least 100 NFTism tokens to access the community.",
+          });
+          return;
+        }
+        const user = {
+          isLoggedIn: true,
+          tokenBalance: tokenBalance,
+        } as User;
+        req.session.user = user;
+        await req.session.save();
+        res.json(user);
+      } catch (error) {
+        res.status(401).json({ message: (error as Error).message });
+      }
+      break;
+    default:
+      res.setHeader("Allow", ["POST"]);
+      res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

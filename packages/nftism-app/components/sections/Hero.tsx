@@ -12,6 +12,7 @@ import {
 import FeaturedCard, {
   Props as FeaturedCardProps,
 } from "@components/ui/FeaturedCard";
+import useUser from "@lib/hooks/useUser";
 
 const featured: FeaturedCardProps[] = [
   {
@@ -47,6 +48,7 @@ const Hero: React.FC<HeroProps> = ({
   ctaText = "",
   ctaLink = "",
 }) => {
+  const { user } = useUser();
   return (
     <Flex
       align="center"
@@ -76,10 +78,12 @@ const Hero: React.FC<HeroProps> = ({
             size="md"
             rounded="md"
             variant="outline"
-            colorScheme="blue"
+            _hover={{ bg: "red.500", color: "white" }}
+            colorScheme="red"
             lineHeight="1"
+            disabled={!user?.isLoggedIn}
           >
-            {ctaText}
+            {user?.isLoggedIn ? ctaText : "Please Sign In"}
           </Button>
         </Link>
         <Text

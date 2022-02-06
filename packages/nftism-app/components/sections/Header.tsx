@@ -10,32 +10,45 @@ import {
   useDisclosure,
   Stack,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
 import { ConnectButton } from "@components/ui/ConnectButton";
 import Logo from "@components/ui/Logo";
+import useUser from "@lib/hooks/useUser";
 
 type NamedLink = {
   name: string;
   href: string;
+  requiresLogin?: boolean;
 };
 
 const Links: NamedLink[] = [
   {
     name: "Blog",
     href: "/blog",
+    requiresLogin: true,
   },
   {
     name: "Price Chart",
     href: "https://www.dextools.io/app/ether/pair-explorer/0x265e4776011d61b52e9ab37827590ab7efbdae89",
+    requiresLogin: false,
   },
   {
     name: "Buy $NFTism",
     href: "https://app.sushi.com/swap?outputCurrency=0xf8fe4dbe106ac2a1e6c96c3ca77b344a1b1a49e1",
+    requiresLogin: false,
   },
 ];
 
-const NavLink = ({ href, children }: { href: string; children: ReactNode }) => {
+const NavLink = ({
+  href,
+  children,
+  disabled = false,
+}: {
+  href: string;
+  children: ReactNode;
+  disabled: boolean;
+}) => {
   try {
     new URL(href);
     return (
@@ -48,7 +61,7 @@ const NavLink = ({ href, children }: { href: string; children: ReactNode }) => {
   } catch (e) {}
   return (
     <NextLink href={href} passHref>
-      <Button color="black" variant="link">
+      <Button color="black" variant="link" disabled={disabled}>
         {children}
       </Button>
     </NextLink>
@@ -57,12 +70,15 @@ const NavLink = ({ href, children }: { href: string; children: ReactNode }) => {
 
 const Header: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user } = useUser();
 
   return (
     <>
       <Box w={{ base: "100%", lg: "80%" }} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
+            variant={"outline"}
+            colorScheme={"red"}
             size={"md"}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             aria-label={"Open Menu"}
@@ -76,8 +92,12 @@ const Header: React.FC = () => {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              {Links.map(({ href, name }) => (
-                <NavLink href={href} key={href}>
+              {Links.map(({ href, name, requiresLogin }) => (
+                <NavLink
+                  href={href}
+                  key={href}
+                  disabled={!!requiresLogin && !user?.isLoggedIn}
+                >
                   {name}
                 </NavLink>
               ))}
@@ -91,8 +111,12 @@ const Header: React.FC = () => {
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-              {Links.map(({ href, name }) => (
-                <NavLink href={href} key={href}>
+              {Links.map(({ href, name, requiresLogin }) => (
+                <NavLink
+                  href={href}
+                  key={href}
+                  disabled={!!requiresLogin && !user?.isLoggedIn}
+                >
                   {name}
                 </NavLink>
               ))}
