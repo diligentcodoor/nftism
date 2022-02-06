@@ -1,44 +1,77 @@
-import { useEffect, useState } from "react";
-import { useSignMessage } from "wagmi";
+import { useCallback, useState } from "react";
+import { useAccount, useNetwork, useSignMessage } from "wagmi";
+import { SiweMessage } from "siwe";
 
 import useUser from "@lib/hooks/useUser";
 import fetchJson, { FetchError } from "@lib/api/fetchJson";
-import { NFTISM_LOGIN_MESSAGE } from "@lib/constants";
+import { UserRejectedRequestError } from "wagmi-private";
 
 export default function useLogin() {
-  // here we just check if user is already logged in and redirect to profile
-  const { user, mutateUser } = useUser({
+  const { mutateUser } = useUser({
     redirectTo: "",
     redirectIfFound: false,
   });
   const [, signMessage] = useSignMessage();
-  const [error, setError] = useState("");
+  const [state, setState] = useState<{
+    error?: string;
+    loading?: boolean;
+  }>({});
+  const [{ data: accountData }] = useAccount();
+  const [{ data: networkData }] = useNetwork();
 
-  useEffect(() => {
-    if (!user) return;
-    if (user.isLoggedIn) return;
+  const logout = useCallback(async () => {
+    await fetch("/api/logout");
+    mutateUser(undefined);
+    setState({});
+  }, [setState, mutateUser]);
 
-    const login = async () => {
-      try {
-        const { data } = await signMessage({ message: NFTISM_LOGIN_MESSAGE });
-        const body = { signature: data };
-        mutateUser(
-          await fetchJson("/api/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          })
-        );
-      } catch (error) {
-        if (error instanceof FetchError) {
-          setError(error.data.message);
-        } else {
-          console.error("An unexpected error happened:", error);
-        }
+  const login = useCallback(async () => {
+    try {
+      const address = accountData?.address;
+      const chainId = networkData?.chain?.id;
+      if (!address || !chainId) return;
+
+      setState((x) => ({ ...x, error: undefined, loading: true }));
+      const nonceRes = await fetch("/api/nonce");
+      const message = new SiweMessage({
+        domain: window.location.host,
+        address,
+        statement: "Sign in with Ethereum to NFTism.",
+        uri: window.location.origin,
+        version: "1",
+        chainId,
+        nonce: await nonceRes.text(),
+      });
+      const signRes = await signMessage({
+        message: message.prepareMessage(),
+      });
+      if (signRes.error) throw signRes.error;
+
+      mutateUser(
+        await fetchJson("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message, signature: signRes.data }),
+        })
+      );
+      setState((x) => ({ ...x, address, loading: false }));
+    } catch (error) {
+      if (error instanceof FetchError) {
+        const {
+          data: { message },
+        } = error as FetchError;
+        setState((x) => ({ ...x, error: message, loading: false }));
+      } else if (error instanceof UserRejectedRequestError) {
+        setState((x) => ({
+          ...x,
+          error: "Please Sign with your Wallet to Login",
+          loading: false,
+        }));
+      } else {
+        console.error("An unexpected error happened:", error);
       }
-    };
-    login();
-  }, [user, setError, signMessage, mutateUser]);
+    }
+  }, [signMessage, mutateUser, accountData?.address, networkData?.chain?.id]);
 
-  return { error };
+  return { login, logout, state };
 }
