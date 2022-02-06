@@ -19,7 +19,7 @@ export type Props = {
 };
 
 const FeaturedCard: React.FC<Props> = ({ artist, title, imgSrc, href }) => (
-  <LinkBox passHref>
+  <LinkBox>
     <Center py={12}>
       <Box
         role={"group"}
