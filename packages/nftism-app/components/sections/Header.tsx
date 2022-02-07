@@ -54,8 +54,8 @@ const NavLink = ({
   try {
     new URL(href);
     return (
-      <ChakraLink href={href} isExternal>
-        <Button color="black" variant="link">
+      <ChakraLink color="black" href={href} isExternal>
+        <Button color="black" variant="link" _focus={{ boxShadow: "" }}>
           {children}
         </Button>
       </ChakraLink>
@@ -63,7 +63,12 @@ const NavLink = ({
   } catch (e) {}
   return (
     <NextLink href={href} passHref>
-      <Button color="black" variant="link" disabled={disabled}>
+      <Button
+        color="black"
+        variant="link"
+        disabled={disabled}
+        _focus={{ boxShadow: "" }}
+      >
         {children}
       </Button>
     </NextLink>
@@ -108,6 +113,7 @@ const Header: React.FC = () => {
                 onClick={() => watchToken(NFTISM_TOKEN_CONFIG)}
                 color="black"
                 variant="link"
+                _focus={{ boxShadow: "" }}
               >
                 Add to Wallet
               </Button>
@@ -130,7 +136,12 @@ const Header: React.FC = () => {
                   {name}
                 </NavLink>
               ))}
-              <Button onClick={addToWallet} color="black" variant="link">
+              <Button
+                _focus={{ boxShadow: "" }}
+                onClick={() => watchToken(NFTISM_TOKEN_CONFIG)}
+                color="black"
+                variant="link"
+              >
                 Add to Wallet
               </Button>
             </Stack>
