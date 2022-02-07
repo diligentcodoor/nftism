@@ -15,6 +15,8 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { ConnectButton } from "@components/ui/ConnectButton";
 import Logo from "@components/ui/Logo";
 import useUser from "@lib/hooks/useUser";
+import { NFTISM_TOKEN_CONFIG } from "@lib/blockchain";
+import { useToken } from "wagmi";
 
 type NamedLink = {
   name: string;
@@ -71,6 +73,7 @@ const NavLink = ({
 const Header: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useUser();
+  const [, watchToken] = useToken();
 
   return (
     <>
@@ -101,6 +104,13 @@ const Header: React.FC = () => {
                   {name}
                 </NavLink>
               ))}
+              <Button
+                onClick={() => watchToken(NFTISM_TOKEN_CONFIG)}
+                color="black"
+                variant="link"
+              >
+                Add to Wallet
+              </Button>
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
@@ -120,6 +130,9 @@ const Header: React.FC = () => {
                   {name}
                 </NavLink>
               ))}
+              <Button onClick={addToWallet} color="black" variant="link">
+                Add to Wallet
+              </Button>
             </Stack>
           </Box>
         ) : null}
