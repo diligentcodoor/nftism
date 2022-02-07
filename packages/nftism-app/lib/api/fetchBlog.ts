@@ -1,6 +1,6 @@
 import { fetchQL } from "./fetchJson";
 
-export type BlogPost = {
+export type Post = {
   slug: string;
   title: string;
   media: string;
@@ -8,7 +8,7 @@ export type BlogPost = {
   content?: string;
 };
 
-export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
+export const fetchBlogPosts = async (): Promise<Post[]> => {
   const {
     data: {
       posts: { nodes: posts },
@@ -50,7 +50,7 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
 
 export const fetchBlogPost = async (
   slug: string
-): Promise<BlogPost | undefined> => {
+): Promise<Post | undefined> => {
   const {
     data: { post: post },
   } = (await fetchQL(
@@ -82,5 +82,5 @@ export const fetchBlogPost = async (
     },
   } = post;
 
-  return { date, content, title, media, slug } as BlogPost;
+  return { date, content, title, media, slug } as Post;
 };
