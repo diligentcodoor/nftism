@@ -31,6 +31,11 @@ const Links: NamedLink[] = [
     requiresLogin: true,
   },
   {
+    name: "Shop",
+    href: "/shop",
+    requiresLogin: true,
+  },
+  {
     name: "Price Chart",
     href: "https://www.dextools.io/app/ether/pair-explorer/0x265e4776011d61b52e9ab37827590ab7efbdae89",
     requiresLogin: false,
@@ -51,18 +56,14 @@ const NavLink = ({
   children: ReactNode;
   disabled: boolean;
 }) => {
+  let isExternal = false;
   try {
     new URL(href);
-    return (
-      <ChakraLink color="black" href={href} isExternal>
-        <Button color="black" variant="link" _focus={{ boxShadow: "" }}>
-          {children}
-        </Button>
-      </ChakraLink>
-    );
+    isExternal = true;
   } catch (e) {}
-  return (
-    <NextLink href={href} passHref>
+
+  const linkBody = (
+    <ChakraLink href={href} isExternal={isExternal}>
       <Button
         color="black"
         variant="link"
@@ -71,7 +72,14 @@ const NavLink = ({
       >
         {children}
       </Button>
+    </ChakraLink>
+  );
+  return isExternal ? (
+    <NextLink href={href} passHref>
+      {linkBody}
     </NextLink>
+  ) : (
+    linkBody
   );
 };
 
