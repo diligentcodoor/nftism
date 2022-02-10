@@ -1,10 +1,9 @@
-import { ReactNode } from "react";
-import NextLink from "next/link";
+import { useToken } from "wagmi";
+
 import {
   Box,
   Flex,
   HStack,
-  Link as ChakraLink,
   IconButton,
   Button,
   useDisclosure,
@@ -12,11 +11,11 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
+import { NFTISM_TOKEN_CONFIG } from "@lib/blockchain";
 import { ConnectButton } from "@components/ui/ConnectButton";
 import Logo from "@components/ui/Logo";
 import useUser from "@lib/hooks/useUser";
-import { NFTISM_TOKEN_CONFIG } from "@lib/blockchain";
-import { useToken } from "wagmi";
+import NavLink from "@components/ui/NavLink";
 
 type NamedLink = {
   name: string;
@@ -26,12 +25,12 @@ type NamedLink = {
 
 const Links: NamedLink[] = [
   {
-    name: "Blog",
+    name: "Archives",
     href: "/blog",
     requiresLogin: true,
   },
   {
-    name: "Shop",
+    name: "Merch",
     href: "/shop",
     requiresLogin: true,
   },
@@ -46,42 +45,6 @@ const Links: NamedLink[] = [
     requiresLogin: false,
   },
 ];
-
-const NavLink = ({
-  href,
-  children,
-  disabled = false,
-}: {
-  href: string;
-  children: ReactNode;
-  disabled: boolean;
-}) => {
-  let isExternal = false;
-  try {
-    new URL(href);
-    isExternal = true;
-  } catch (e) {}
-
-  const linkBody = (
-    <ChakraLink href={href} isExternal={isExternal}>
-      <Button
-        color="black"
-        variant="link"
-        disabled={disabled}
-        _focus={{ boxShadow: "" }}
-      >
-        {children}
-      </Button>
-    </ChakraLink>
-  );
-  return isExternal ? (
-    <NextLink href={href} passHref>
-      {linkBody}
-    </NextLink>
-  ) : (
-    linkBody
-  );
-};
 
 const Header: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
