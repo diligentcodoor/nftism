@@ -1,3 +1,4 @@
+import { ChevronUpIcon } from "@chakra-ui/icons";
 import {
   Box,
   Center,
@@ -9,16 +10,28 @@ import {
   Link,
   LinkBox,
   LinkOverlay,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
 } from "@chakra-ui/react";
 
-export type Props = {
+type BaseProps = {
   artist: string;
   title: string;
   imgSrc: string;
-  href: string;
 };
 
-const FeaturedCard: React.FC<Props> = ({ artist, title, imgSrc, href }) => (
+type SingleLinkProps = BaseProps & { type: "single"; href: string };
+type MultiLinkProps = BaseProps & {
+  type: "multi";
+  hrefs: { title: string; link: string }[];
+};
+
+export type Props = SingleLinkProps | MultiLinkProps;
+
+const FeaturedCard: React.FC<Props> = (props: Props) => (
   <LinkBox>
     <Center py={12}>
       <Box
@@ -45,7 +58,7 @@ const FeaturedCard: React.FC<Props> = ({ artist, title, imgSrc, href }) => (
             pos: "absolute",
             top: 5,
             left: 0,
-            backgroundImage: `url(${imgSrc})`,
+            backgroundImage: `url(${props.imgSrc})`,
             filter: "blur(15px)",
             zIndex: -1,
           }}
@@ -60,19 +73,45 @@ const FeaturedCard: React.FC<Props> = ({ artist, title, imgSrc, href }) => (
             height={230}
             width={282}
             objectFit={"cover"}
-            src={imgSrc}
-            alt={title}
+            src={props.imgSrc}
+            alt={props.title}
           />
         </Box>
         <Stack pt={10} align={"center"}>
           <Text color={"red.300"} fontSize={"sm"} textTransform={"uppercase"}>
-            {artist}
+            {props.artist}
           </Text>
-          <LinkOverlay href={href}>
-            <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
-              {title}
-            </Heading>
-          </LinkOverlay>
+          {props.type === "single" ? (
+            <LinkOverlay href={props.href}>
+              <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
+                {props.title}
+              </Heading>
+            </LinkOverlay>
+          ) : (
+            <Menu placement="top" flip={false} size="sm" colorScheme="red">
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronUpIcon />}
+                variant="outline"
+                colorScheme="blue"
+                size="sm"
+              >
+                {props.title}
+              </MenuButton>
+              <MenuList>
+                {props.hrefs.map((href, i) => (
+                  <MenuItem
+                    key={i}
+                    onClick={() => window.open(href.link, "_blank")}
+                    color="gray.900"
+                    fontSize={"md"}
+                  >
+                    {href.title}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </Menu>
+          )}
         </Stack>
       </Box>
     </Center>
