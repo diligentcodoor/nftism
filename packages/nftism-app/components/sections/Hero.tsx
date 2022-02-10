@@ -32,7 +32,7 @@ const featured: FeaturedCardProps[] = [
   {
     type: "multi",
     artist: "Kenny Schachter",
-    title: "Bespoke",
+    title: "NFTs",
     imgSrc: "/kenny-logo.png",
     hrefs: [
       {
