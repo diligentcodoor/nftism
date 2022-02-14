@@ -8,7 +8,6 @@ const HeadSection: React.FC = () => {
   const description =
     "NFTism is the community that binds us together and empowers us as independent creators and collectors.";
   const nftismTokenImage = "https://www.nftism.com/nftism-token.png";
-  const nftismLogoImage = "https://www.nftism.com/nftism-logo.png";
 
   return (
     <Head>
@@ -23,7 +22,7 @@ const HeadSection: React.FC = () => {
 
       <meta property="og:url" content={url} key="ogurl" />
       <meta property="og:title" content={title} key="ogtitle" />
-      <meta property="og:image" content={nftismLogoImage} key="ogimage" />
+      <meta property="og:image" content={nftismTokenImage} key="ogimage" />
       <meta property="og:description" content={description} key="ogdesc" />
       <meta property="og:site_name" content={title} key="ogsitename" />
 
