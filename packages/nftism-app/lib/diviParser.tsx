@@ -7,7 +7,7 @@ import BlogVideo from "@components/ui/BlogVideo";
 import BlogImage from "@components/ui/BlogImage";
 import { Attributes } from "html-react-parser/lib/attributes-to-props";
 import { Box, Heading, Link, Text } from "@chakra-ui/react";
-import { buildVimeoLink, extractURL } from "./utils";
+import { buildVideoLink, extractURL } from "./utils";
 import BlogAudio from "@components/ui/BlogAudio";
 
 type TextNode = {
@@ -106,7 +106,7 @@ function parseText(
     } else if (data.includes("et_pb_video")) {
       const src = extractURL(data);
       if (!src) return null;
-      return <BlogVideo src={buildVimeoLink(src)} />;
+      return <BlogVideo src={buildVideoLink(src)} />;
     } else if (data.includes("et_pb_audio")) {
       const src = extractURL(data);
       if (!src) return null;
