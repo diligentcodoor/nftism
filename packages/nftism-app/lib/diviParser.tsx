@@ -101,7 +101,7 @@ function parseText(
   if (data.includes("et_pb")) {
     if (data.includes("et_pb_image")) {
       const src = extractURL(data);
-      if (!src) return null;
+      if (!src) return <></>;
       return <BlogImage src={src} />;
     } else if (data.includes("et_pb_video")) {
       const src = extractURL(data);
