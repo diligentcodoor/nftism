@@ -3,39 +3,42 @@ import { withIronSessionSsr } from "iron-session/next";
 
 import LandingLayout from "@components/layouts/LandingLayout";
 import { Post, fetchBlogPost } from "@lib/api/fetchBlog";
-import { sessionOptions } from "@lib/session";
+import { getRoleProps, sessionOptions } from "@lib/session";
 import BlogPost from "@components/ui/BlogPost";
+import Error from "next/error";
 
 type BlogProps = {
   post: Post;
+  errorCode: number;
+  errorMsg: string;
 };
 
-const BlogPage: NextPage<BlogProps> = ({ post }) => {
+const BlogPage: NextPage<BlogProps> = ({ post, errorCode, errorMsg }) => {
   return (
     <LandingLayout>
-      <BlogPost {...post} />
+      {errorCode > 0 ? (
+        <Error statusCode={errorCode} title={errorMsg} />
+      ) : (
+        <BlogPost {...post} />
+      )}
     </LandingLayout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
   async ({ req, res, params }) => {
-    if (!req.session.user?.isLoggedIn) {
-      return { notFound: true };
-    }
-
     res.setHeader(
       "Cache-Control",
       "public, s-maxage=3600, stale-while-revalidate"
     );
-    const slug = params!.slug as string;
 
-    const post = await fetchBlogPost(slug);
-    if (!post) {
-      return { notFound: true };
-    }
-
-    return { props: { post } };
+    return await getRoleProps(
+      req.session.user,
+      {
+        post: async () => await fetchBlogPost(params!.slug as string),
+      },
+      { post: {} }
+    );
   },
   sessionOptions
 );

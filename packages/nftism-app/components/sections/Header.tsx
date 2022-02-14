@@ -16,6 +16,7 @@ import { ConnectButton } from "@components/ui/ConnectButton";
 import Logo from "@components/ui/Logo";
 import useUser from "@lib/hooks/useUser";
 import NavLink from "@components/ui/NavLink";
+import { UserRole } from "@lib/session";
 
 type NamedLink = {
   name: string;
@@ -75,7 +76,7 @@ const Header: React.FC = () => {
                 <NavLink
                   href={href}
                   key={href}
-                  disabled={!!requiresLogin && !user?.isLoggedIn}
+                  disabled={!!requiresLogin && user?.role() !== UserRole.MEMBER}
                 >
                   {name}
                 </NavLink>
@@ -102,7 +103,7 @@ const Header: React.FC = () => {
                 <NavLink
                   href={href}
                   key={href}
-                  disabled={!!requiresLogin && !user?.isLoggedIn}
+                  disabled={!!requiresLogin && user?.role() !== UserRole.MEMBER}
                 >
                   {name}
                 </NavLink>

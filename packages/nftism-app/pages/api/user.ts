@@ -6,18 +6,9 @@ import { NFTISM_TOKEN_THRESHOLD } from "@lib/constants";
 export default withIronSessionApiRoute(userRoute, sessionOptions);
 
 async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
-  if (
-    req.session.user &&
-    req.session.user.tokenBalance >= NFTISM_TOKEN_THRESHOLD
-  ) {
-    res.json({
-      ...req.session.user,
-      isLoggedIn: true,
-    });
+  if (req.session.user) {
+    res.json(req.session.user);
   } else {
-    res.json({
-      isLoggedIn: false,
-      tokenBalance: 0,
-    });
+    res.json(new User(false, 0));
   }
 }
