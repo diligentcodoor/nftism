@@ -8,6 +8,7 @@ import BlogImage from "@components/ui/BlogImage";
 import { Attributes } from "html-react-parser/lib/attributes-to-props";
 import { Box, Heading, Link, Text } from "@chakra-ui/react";
 import { buildVimeoLink, extractURL } from "./utils";
+import BlogAudio from "@components/ui/BlogAudio";
 
 type TextNode = {
   type: "text";
@@ -106,6 +107,10 @@ function parseText(
       const src = extractURL(data);
       if (!src) return null;
       return <BlogVideo src={buildVimeoLink(src)} />;
+    } else if (data.includes("et_pb_audio")) {
+      const src = extractURL(data);
+      if (!src) return null;
+      return <BlogAudio src={src} />;
     } else {
       return <></>;
     }
