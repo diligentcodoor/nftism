@@ -5,6 +5,7 @@ import { SiweMessage } from "siwe";
 import useUser from "@lib/hooks/useUser";
 import fetchJson, { FetchError } from "@lib/api/fetchJson";
 import { UserRejectedRequestError } from "wagmi-private";
+import { fetchLogin } from "@lib/api/fetchUser";
 
 export default function useLogin() {
   const { mutateUser } = useUser({
@@ -47,13 +48,7 @@ export default function useLogin() {
       });
       if (signRes.error) throw signRes.error;
 
-      mutateUser(
-        await fetchJson("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message, signature: signRes.data }),
-        })
-      );
+      mutateUser(await fetchLogin(message, signRes.data));
       setState((x) => ({ ...x, address, loading: false }));
     } catch (error) {
       if (error instanceof FetchError) {

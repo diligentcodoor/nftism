@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 
 import LandingLayout from "@components/layouts/LandingLayout";
 import Hero from "@components/sections/Hero";
+import Featured from "@components/sections/Featured";
 
 const Home: NextPage = () => {
   return (
@@ -12,6 +13,7 @@ const Home: NextPage = () => {
         ctaText="Enter NFTism"
         ctaLink="/blog"
       />
+      <Featured />
     </LandingLayout>
   );
 };

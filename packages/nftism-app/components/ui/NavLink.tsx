@@ -12,8 +12,6 @@ type Props = {
 const isExternalLink = (href: string) => href.startsWith("http");
 
 const NavLink: React.FC<Props> = ({ href, children, disabled = false }) => {
-  if (disabled) return null;
-
   const isExternal = isExternalLink(href);
   const linkBody = (
     <ChakraLink href={href} isExternal={isExternal}>

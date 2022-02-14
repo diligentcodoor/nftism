@@ -5,14 +5,17 @@ import { Flex, useBreakpointValue } from "@chakra-ui/react";
 
 import LandingLayout from "@components/layouts/LandingLayout";
 import { Post, fetchBlogPosts } from "@lib/api/fetchBlog";
-import { sessionOptions } from "@lib/session";
+import { getRoleProps, sessionOptions } from "@lib/session";
 import BlogCard from "@components/ui/BlogCard";
+import Error from "next/error";
 
 type BlogProps = {
   posts: Post[];
+  errorCode: number;
+  errorMsg: string;
 };
 
-const Blog: NextPage<BlogProps> = ({ posts }) => {
+const Blog: NextPage<BlogProps> = ({ posts, errorCode, errorMsg }) => {
   const columnCount = useBreakpointValue({ base: 1, md: 2, lg: 3 }, "base");
   const columns: Post[][] = Array(columnCount)
     .fill(0)
@@ -23,31 +26,35 @@ const Blog: NextPage<BlogProps> = ({ posts }) => {
 
   return (
     <LandingLayout>
-      <Flex>
-        {columns.map((columnPosts, i) => (
-          <Flex key={i} direction="column">
-            {columnPosts.map((post) => (
-              <BlogCard key={post.slug} {...post} />
-            ))}
-          </Flex>
-        ))}
-      </Flex>
+      {errorCode > 0 ? (
+        <Error statusCode={errorCode} title={errorMsg} />
+      ) : (
+        <Flex>
+          {columns.map((columnPosts, i) => (
+            <Flex key={i} direction="column">
+              {columnPosts.map((post) => (
+                <BlogCard key={post.slug} {...post} />
+              ))}
+            </Flex>
+          ))}
+        </Flex>
+      )}
     </LandingLayout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
   async ({ req, res }) => {
-    if (!req.session.user?.isLoggedIn) {
-      return { notFound: true };
-    }
     res.setHeader(
       "Cache-Control",
       "public, s-maxage=3600, stale-while-revalidate"
     );
 
-    const posts = await fetchBlogPosts();
-    return { props: { posts } };
+    return await getRoleProps(
+      req.session.user,
+      { posts: async () => await fetchBlogPosts() },
+      { posts: [] }
+    );
   },
   sessionOptions
 );

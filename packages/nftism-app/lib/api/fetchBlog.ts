@@ -16,7 +16,7 @@ export const fetchBlogPosts = async (): Promise<Post[]> => {
   } = (await fetchQL(
     `
     query AllPosts {
-      posts (first: 20, where: { orderby: { field: DATE, order: DESC }, categoryNotIn: "345", categoryIn: "340"}) {
+      posts (first: 20, where: { orderby: { field: DATE, order: DESC }, categoryIn: ["340", "345"]}) {
         nodes {
           date
           title
