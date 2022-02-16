@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
   async ({ req, res, params }) => {
     res.setHeader(
       "Cache-Control",
-      "public, s-maxage=3600, stale-while-revalidate"
+      "private, s-maxage=3600, stale-while-revalidate"
     );
 
     return await getRoleProps(
