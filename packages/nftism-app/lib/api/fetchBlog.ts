@@ -16,7 +16,7 @@ export const fetchBlogPosts = async (): Promise<Post[]> => {
   } = (await fetchQL(
     `
     query AllPosts {
-      posts (first: 20, where: { orderby: { field: DATE, order: DESC }, categoryIn: ["340", "345"]}) {
+      posts (first: 20, where: { orderby: { field: DATE, order: DESC }}) {
         nodes {
           date
           title
@@ -31,21 +31,23 @@ export const fetchBlogPosts = async (): Promise<Post[]> => {
     }
     `
   )) as { data: { posts: { nodes: any[] } } };
-  return posts.map(
-    ({
-      slug,
-      title,
-      featuredImage: {
-        node: { mediaItemUrl: media },
-      },
-      date,
-    }) => ({
-      slug,
-      title,
-      date,
-      media,
-    })
-  );
+  return posts
+    .filter((post) => !!post.featuredImage)
+    .map(
+      ({
+        slug,
+        title,
+        featuredImage: {
+          node: { mediaItemUrl: media },
+        },
+        date,
+      }) => ({
+        slug,
+        title,
+        date,
+        media,
+      })
+    );
 };
 
 export const fetchBlogPost = async (
