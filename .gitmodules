@@ -6,3 +6,6 @@
 [submodule "packages/foundry-huxlxy-contracts/lib/solmate"]
 	path = packages/foundry-huxlxy-contracts/lib/solmate
 	url = https://github.com/Rari-Capital/solmate
+[submodule "packages/foundry-huxlxy-contracts/lib/openzeppelin-contracts"]
+	path = packages/foundry-huxlxy-contracts/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
