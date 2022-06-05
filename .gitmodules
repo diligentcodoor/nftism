@@ -3,12 +3,6 @@
 	url = git@github.com:HashLips/hashlips_art_engine.git
 	ignore = dirty
 
-[submodule "packages/foundry/lib/openzeppelin-contracts"]
-	path = packages/huxlxy-contracts/lib/openzeppelin-contracts
-	url = https://github.com/openzeppelin/openzeppelin-contracts
-[submodule "packages/foundry/lib/ds-test"]
-	path = packages/huxlxy-contracts/lib/ds-test
-	url = https://github.com/dapphub/ds-test
-[submodule "packages/huxlxy-contracts/lib/solmate"]
-	path = packages/huxlxy-contracts/lib/solmate
-	url = https://github.com/rari-capital/solmate
+[submodule "packages/foundry-huxlxy-contracts/lib/solmate"]
+	path = packages/foundry-huxlxy-contracts/lib/solmate
+	url = https://github.com/Rari-Capital/solmate
